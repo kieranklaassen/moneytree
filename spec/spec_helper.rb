@@ -1,7 +1,6 @@
 require 'bundler/setup'
-require 'moneytree'
-
 Bundler.require :default, :development
+require 'moneytree'
 
 # If you're using all parts of Rails:
 Combustion.initialize! :all

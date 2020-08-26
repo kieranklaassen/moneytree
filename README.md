@@ -1,11 +1,11 @@
 # 🚧 WORK IN PROGRESS 🚧
 
-# Moneytree
+# Moneytreen 💵 🌴
 
 [![Actions Status](https://github.com/kieranklaassen/moneytree/workflows/build/badge.svg)](https://github.com/kieranklaassen/moneytree/actions)
 [![Gem Version](https://badge.fury.io/rb/moneytree.svg)](https://badge.fury.io/rb/moneytree)
 
-Moneytree is a rails engine to add multi-psp payments to your app without needing to think about Ouath, callbacks, PCI
+🔥 Moneytree is a rails engine to add multi-psp payments to your app without needing to think about Ouath, callbacks, PCI
 compliance, platform fees, multi-currency, and more. We give you a lot of ways to extend your own classes so that you
 can focus on your business logic instead of integration with payment service providers.
 

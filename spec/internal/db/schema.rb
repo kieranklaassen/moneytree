@@ -23,6 +23,7 @@ ActiveRecord::Schema.define do
     t.string :currency_code
     t.integer :psp
     t.references :account
+    t.references :order
     t.references :card
     t.timestamps
   end

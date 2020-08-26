@@ -7,8 +7,8 @@ Gem::Specification.new do |spec|
   spec.email         = ["kieranklaassen@gmail.com"]
 
   spec.summary       = %q{A payments engine for rails centered aorund transactional payments and orders.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.description   = spec.summary
+  spec.homepage      = "https://github.com/kieranklaassen/moneytree"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
 

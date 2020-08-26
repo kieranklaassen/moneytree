@@ -3,7 +3,8 @@
 ActiveRecord::Schema.define do
   create_table(:accounts, force: true) do |t|
     t.string :name
-    t.integer :psp
+    t.text :psp_credentials
+    t.integer :moneytree_psp
     t.timestamps
   end
 
@@ -19,9 +20,11 @@ ActiveRecord::Schema.define do
     t.decimal :amount
     t.decimal :app_fee_amount
     t.integer :status
+    t.integer :type
     t.string :remote_identifier
     t.string :currency_code
-    t.integer :psp
+    t.string :psp_error
+    t.integer :moneytree_psp
     t.references :account
     t.references :order
     t.references :card
@@ -33,7 +36,7 @@ ActiveRecord::Schema.define do
     t.string :last_name
     t.string :email
     t.string :remote_identifier
-    t.integer :psp
+    t.integer :moneytree_psp
     t.references :account
     t.timestamps
   end
@@ -45,7 +48,7 @@ ActiveRecord::Schema.define do
     t.integer :expiration_year
     t.string :cardholder_name
     t.string :fingerprint
-    t.integer :psp
+    t.integer :moneytree_psp
     t.references :customer
     t.references :account
     t.timestamps

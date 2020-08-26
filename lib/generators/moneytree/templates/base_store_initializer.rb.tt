@@ -1,0 +1,20 @@
+class Moneytree::Store < Moneytree::BaseStore
+  def track_visit(data)
+    # do
+  end
+
+  def track_event(data)
+    # something
+  end
+
+  def geocode(data)
+    # amazing
+  end
+
+  def authenticate(data)
+    # !!!
+  end
+end
+
+# set to true for JavaScript tracking
+Moneytree.api = false

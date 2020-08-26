@@ -1,0 +1,10 @@
+class Moneytree::Event < ApplicationRecord
+  include Moneytree::QueryMethods
+
+  self.table_name = "Moneytree_events"
+
+  belongs_to :visit
+  belongs_to :user, optional: true<% if properties_type == "text" %>
+
+  serialize :properties, JSON<% end %>
+end

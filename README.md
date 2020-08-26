@@ -8,7 +8,7 @@ Currently we support the following PSP's:
 - Stripe
 - Braintree
 
-But if you want to add more, we make it easy to do so. Read our [Contributing]() section to learn more.
+But if you want to add more, we make it easy to do so. Read our [Contributing](https://github.com/kieranklaassen/moneytree#contributing) section to learn more.
 
 ## Installation
 
@@ -96,7 +96,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/moneytree. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/moneytree/blob/master/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/kieranklaassen/moneytree. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/kieranklaassen/moneytree/blob/master/CODE_OF_CONDUCT.md).
 
 
 ## License
@@ -105,4 +105,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Moneytree project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/moneytree/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Moneytree project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/kieranklaassen/moneytree/blob/master/CODE_OF_CONDUCT.md).

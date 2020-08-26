@@ -1,6 +1,6 @@
 # 🚧 WORK IN PROGRESS 🚧
 
-# Moneytreen 💵 🌴
+# Moneytree 💵 🌴
 
 [![Actions Status](https://github.com/kieranklaassen/moneytree/workflows/build/badge.svg)](https://github.com/kieranklaassen/moneytree/actions)
 [![Gem Version](https://badge.fury.io/rb/moneytree.svg)](https://badge.fury.io/rb/moneytree)

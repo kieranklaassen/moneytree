@@ -10,3 +10,4 @@ gem 'rspec-rails', '~> 3.4'
 gem "rubocop", "~> 0.89.1"
 gem "combustion", "~> 1.3"
 gem "sqlite3", "~> 1.4"
+gem 'guard-rspec', require: false

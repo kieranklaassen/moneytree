@@ -5,9 +5,17 @@
 [![Actions Status](https://github.com/kieranklaassen/moneytree/workflows/build/badge.svg)](https://github.com/kieranklaassen/moneytree/actions)
 [![Gem Version](https://badge.fury.io/rb/moneytree.svg)](https://badge.fury.io/rb/moneytree)
 
-🔥 Moneytree is a rails engine to add multi-psp payments to your app without needing to think about Ouath, callbacks, PCI
-compliance, platform fees, multi-currency, and more. We give you a lot of ways to extend your own classes so that you
-can focus on your business logic instead of integration with payment service providers.
+🔥 A powerful, simple, and extendable payment engine for rails centered around transactional payments. 💵 🌴
+
+Moneytree is a rails engine to add multi-PSP payments to your app by extending your own models. It brings the following
+functionality with almost no work on your end:
+
+- 💵💶💷💴 Multi-currency
+- 🔑 OAuth to link your PSP account
+- 👩‍💻PSP account creation, (with commission)
+- ⚙️ Webhooks
+- 💳 PCI compliance with Javascript libraries
+- 🧲 Platform fees
 
 Currently we support the following PSP's:
 
@@ -15,7 +23,7 @@ Currently we support the following PSP's:
 - Stripe
 - Braintree
 
-But if you want to add more, we make it easy to do so. Read our
+But if you want to add more PSP's, we make it easy to do so. Read our
 [Contributing](https://github.com/kieranklaassen/moneytree#contributing) section to learn more.
 
 ## Installation
@@ -35,6 +43,7 @@ Add the latest version of Moneytree to your gem Gemfile by running:
 ```bash
 $ bundle add moneytree
 $ bundle install
+$ bundle exec initialize_moneytree
 ```
 
 Add

@@ -3,28 +3,27 @@ require 'active_support'
 require 'active_support/core_ext'
 
 # modules
+# FIXME: autoload instead? https :/ / github.com / excid3 / noticed / blob / master / lib / noticed.rb
 require 'moneytree/version'
+require 'moneytree/account'
+require 'moneytree/transaction'
+require 'moneytree/payment_provider/square'
 
 require "'moneytree/engine" if defined?(Rails)
 
 module Moneytree
+  PSPS = %i[square stripe braintree].freeze
+
   mattr_accessor :enabled_psps
-  self.enabled_psps = %i[square stripe braintree]
-
   mattr_accessor :account_class
-  self.account_class = 'Account'
-  mattr_accessor :account_table
-  self.account_table = account_class.tableize
-
   mattr_accessor :order_class
-  self.order_class = 'Order'
-  mattr_accessor :order_table
-  self.order_table = order_class.tableize
-
   mattr_accessor :transaction_class
-  self.transaction_class = 'Transaction'
-  mattr_accessor :transaction_table
-  self.transaction_table = transaction_class.tableize
+  mattr_accessor :square_credentials
+
+  @@enabled_psps = PSPS
+  @@account_class = 'Account'
+  @@order_class = 'Order'
+  @@transaction_class = 'Transaction'
 
   def self.setup
     yield self

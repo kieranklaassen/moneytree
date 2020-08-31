@@ -1,11 +1,18 @@
 # 🚧 WORK IN PROGRESS 🚧
 
+- [ ] OAuth
+- [ ] Cards
+- [ ] Customers
+- [ ] Payments
+- [ ] Refunds
+- [ ] Notifications
+
 # Moneytree 💵 🌴
 
 [![Actions Status](https://github.com/kieranklaassen/moneytree/workflows/build/badge.svg)](https://github.com/kieranklaassen/moneytree/actions)
 [![Gem Version](https://badge.fury.io/rb/moneytree.svg)](https://badge.fury.io/rb/moneytree)
 
-🔥 A powerful, simple, and extendable payment engine for rails centered around transactional payments. 💵 🌴
+🔥 A powerful, simple, and extendable payment engine for rails, centered around transactional payments. 💵 🌴
 
 Moneytree is a rails engine to add multi-PSP payments to your app by extending your own models. It brings the following
 functionality with almost no work on your end:
@@ -43,37 +50,12 @@ Add the latest version of Moneytree to your gem Gemfile by running:
 ```bash
 $ bundle add moneytree
 $ bundle install
-$ bundle exec initialize_moneytree
-```
-
-Add
-
-### Credentials
-
-You'll need to add your Psp credentials to secrets `config/secrets.yml`, credentials `rails credentials:edit`
-
-```yaml
-development:
-  stripe:
-    private_key: xxxx
-    public_key: yyyy
-    signing_secret: zzzz
-  braintree:
-    private_key: xxxx
-    public_key: yyyy
-    merchant_id: aaaa
-    environment: sandbox
-  square:
-    access_token: token
-    environment: sandbox
+$ bundle exec moneytree init
 ```
 
 Or your can use environment variables:
 
-For Stripe, you can also use the `STRIPE_PUBLIC_KEY`, `STRIPE_PRIVATE_KEY` and `STRIPE_SIGNING_SECRET` environment
-variables. For Braintree, you can also use `BRAINTREE_MERCHANT_ID`, `BRAINTREE_PUBLIC_KEY`, `BRAINTREE_PRIVATE_KEY`, and
-`BRAINTREE_ENVIRONMENT` environment variables. For Square, you can also use the `SQUARE_ACCESS_TOKEN`, and
-`SQUARE_ENVIRONMENT`
+FIXME: add
 
 ## Configuration
 
@@ -83,18 +65,16 @@ Do you need to make some changes to how Moneytree is used? You can create an ini
 ```ruby
 Moneytree.setup do |config|
   config.enabled_psps = [:square, :stripe, :braintree]
-
-  # Account, merchant, team, Payee etc.
   config.account_class = 'Account'
-  config.account_table = 'accounts'
-
-  # Order
   config.order_class = 'Order'
-  config.order_table = 'orders'
-
-  # Transaction
   config.transaction_class = 'Transaction'
-  config.transaction_table = 'transactions'
+
+  config.square_credentials = {
+    app_id: ENV['SQUARE_APP_ID'],
+    app_secret: ENV['SQUARE_APP_SECRET'],
+    environment: Rails.env.production? : 'production' : 'sandbox',
+    oauth_domain: Rails.env.production? ? 'https://connect.squareup.com' : 'https://connect.squareupsandbox.com'
+  }
 end
 ```
 

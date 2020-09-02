@@ -10,6 +10,23 @@ module Moneytree
       delegate :client, :oauth_link, to: :psp
     end
 
+    def oauth_callback(params)
+      update! psp_credentials: psp.oauth_callback(params)
+    end
+
+    def psp_connected?
+      false
+      # moneytree_psp && psp_credentials
+    end
+
+    def needs_oauth?
+      true
+    end
+
+    def charge; end
+
+    def refund; end
+
     private
 
     def psp

@@ -19,11 +19,13 @@ module Moneytree
   mattr_accessor :order_class
   mattr_accessor :transaction_class
   mattr_accessor :square_credentials
+  mattr_accessor :current_account
 
   @@enabled_psps = PSPS
   @@account_class = 'Account'
   @@order_class = 'Order'
   @@transaction_class = 'Transaction'
+  @@current_account = 'current_account'
 
   def self.setup
     yield self

@@ -1,5 +1,5 @@
 module Moneytree
-  module Ouath
+  module Oauth
     class SquareController < MoneytreeController
       def new
         redirect_to current_account.oauth_link

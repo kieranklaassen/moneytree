@@ -1,3 +1,5 @@
+require_dependency "moneytree/application_controller"
+
 module Moneytree
   class MoneytreeController < ApplicationController
 

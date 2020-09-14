@@ -1,16 +1,23 @@
 # 🚧 WORK IN PROGRESS 🚧
 
 - [ ] OAuth
-- [ ] Cards
-- [ ] Customers
-- [ ] Payments
-- [ ] Refunds
+  - [ ] Controller actions
+  - [ ] Scopes
+  - [ ] Square
+  - [ ] Stripe
+  - [ ] Braintree
+- [ ] Moneytree models
+  - [ ] Payment gateway, belongs to account
+  - [ ] Cards
+  - [ ] Customers
+  - [ ] Payments
+  - [ ] Refunds
 - [ ] Notifications
 
 # Moneytree 💵 🌴
 
 [![Actions Status](https://github.com/kieranklaassen/moneytree/workflows/build/badge.svg)](https://github.com/kieranklaassen/moneytree/actions)
-[![Gem Version](https://badge.fury.io/rb/moneytree.svg)](https://badge.fury.io/rb/moneytree)
+[![Gem Version](https://badge.fury.io/rb/moneytree-rails.svg)](https://badge.fury.io/rb/moneytree-rails)
 
 🔥 A powerful, simple, and extendable payment engine for rails, centered around transactional payments. 💵 🌴
 

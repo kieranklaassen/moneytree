@@ -1,3 +1,5 @@
+require 'active_support/concern'
+
 module Moneytree
   module Account
     extend ActiveSupport::Concern

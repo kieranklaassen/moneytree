@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  psp_credentials: MyText
+  moneytree_psp: 1
+  account: one
+  account_type: Account
+
+two:
+  psp_credentials: MyText
+  moneytree_psp: 1
+  account: two
+  account_type: Account

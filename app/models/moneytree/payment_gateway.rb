@@ -8,7 +8,7 @@ module Moneytree
     serialize :psp_credentials
     # encrypts :psp_credentials
     # FIXME: enable https://github.com/ankane/lockbox
-    delegate :client, :oauth_link, to: :psp
+    delegate :client, :oauth_link, :scope_correct?, to: :psp
 
     # has_many :orders
     # has_many :transactions
@@ -20,12 +20,11 @@ module Moneytree
     end
 
     def psp_connected?
-      false
-      # moneytree_psp && psp_credentials
+      moneytree_psp && psp_credentials
     end
 
     def needs_oauth?
-      true
+      !psp_connected? || !scope_correct?
     end
 
     def charge; end

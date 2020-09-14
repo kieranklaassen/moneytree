@@ -2,8 +2,25 @@ require 'test_helper'
 
 module Moneytree
   class PaymentGatewayTest < ActiveSupport::TestCase
-    # test "the truth" do
-    #   assert true
-    # end
+    setup do
+      @account = Merchant.create name: 'Mr Boomtown'
+      @payment_gateway = Moneytree::PaymentGateway.create(account: @account, moneytree_psp: :stripe)
+      Moneytree.stripe_credentials = {
+        api_key: 'sk_test_1Ee5ODk7hwARsMP64WvRvyHe',
+        client_id: 'ca_I1PszKbm15ZwqDeQJFdW2SU99j33rbPs'
+      }
+    end
+
+    test 'has one Account' do
+      assert_equal @payment_gateway.account.class, Merchant
+    end
+
+    test 'has no connected stripe account' do
+      assert_nil @payment_gateway.client
+      assert_equal @payment_gateway.oauth_link, 'https://connect.stripe.com/oauth/authorize?client_id=ca_I1PszKbm15ZwqDeQJFdW2SU99j33rbPs&redirect_uri=mt%2Foauth%2Fstripe%2Fcallback&response_type=code&scope=read_write&stripe_user%5Bcurrency%5D=USD&stripe_user%5Bemail%5D=test%40example.com&stripe_user%5Burl%5D=https%3A%2F%2Fwww.example.com'
+      refute @payment_gateway.psp_connected?
+      assert @payment_gateway.needs_oauth?
+      refute @payment_gateway.scope_correct?
+    end
   end
 end

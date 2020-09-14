@@ -27,3 +27,5 @@ gem "pry", "~> 0.13.1"
 gem 'guard'
 gem 'guard-minitest'
 gem "annotate", "~> 3.1"
+
+gem "stripe", "~> 5.25"

@@ -195,6 +195,7 @@ GEM
       faraday-http-cache (~> 2.0)
       faraday_middleware (~> 0.13)
       logging (~> 2.2)
+    stripe (5.25.0)
     thor (1.0.1)
     thread_safe (0.3.6)
     tzinfo (1.2.7)
@@ -219,6 +220,7 @@ DEPENDENCIES
   rubocop (~> 0.89.1)
   sqlite3
   square.rb (~> 6.3)
+  stripe (~> 5.25)
 
 BUNDLED WITH
    2.2.0.rc.1

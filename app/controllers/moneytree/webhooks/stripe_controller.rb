@@ -1,5 +1,5 @@
 module Moneytree
-  module Callbacks
+  module Webhooks
     class StripeController < MoneytreeController
       def create
         # Do some callback magic here

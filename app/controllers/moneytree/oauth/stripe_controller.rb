@@ -6,7 +6,8 @@ module Moneytree
       end
 
       def callback
-        current_account.oauth_callback(params)
+        # https://stripe.com/docs/connect/oauth-reference#get-authorize-response
+        current_account.oauth_callback(params) # FIXME: Add strong parameter for code only
         render text: 'Boom'
       end
     end

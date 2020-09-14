@@ -5,6 +5,7 @@
 # modules
 # FIXME: autoload instead? https :/ / github.com / excid3 / noticed / blob / master / lib / noticed.rb
 require 'moneytree/version'
+require 'moneytree/account'
 require 'moneytree/payment_provider/base'
 # require 'moneytree/payment_provider/square'
 require 'moneytree/payment_provider/stripe'

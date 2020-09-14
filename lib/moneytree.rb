@@ -1,15 +1,14 @@
 # dependencies
-require 'active_support'
-require 'active_support/core_ext'
+# require 'rails'
+# require 'active_support/core_ext'
 
 # modules
 # FIXME: autoload instead? https :/ / github.com / excid3 / noticed / blob / master / lib / noticed.rb
 require 'moneytree/version'
-require 'moneytree/account'
-require 'moneytree/transaction'
-require 'moneytree/payment_provider/square'
-
-require "'moneytree/engine" if defined?(Rails)
+require 'moneytree/payment_provider/base'
+# require 'moneytree/payment_provider/square'
+require 'moneytree/payment_provider/stripe'
+require 'moneytree/engine'
 
 module Moneytree
   PSPS = %i[square stripe braintree].freeze

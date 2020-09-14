@@ -1,7 +1,9 @@
-class Transaction < ApplicationRecord
-  include Moneytree::Transaction
+# FIXME: Move to app
 
-  belongs_to :card
-  belongs_to :account
-  belongs_to :order
-end
+# class Transaction < ApplicationRecord
+#   include Moneytree::Transaction
+
+#   belongs_to :card
+#   belongs_to :account
+#   belongs_to :order
+# end

@@ -1,6 +1,8 @@
-class Order < ApplicationRecord
-  belongs_to :account
-  belongs_to :customer
+# FIXME: Move to app
 
-  has_many :transactions
-end
+# class Order < ApplicationRecord
+#   belongs_to :account
+#   belongs_to :customer
+
+#   has_many :transactions
+# end

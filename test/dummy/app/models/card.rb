@@ -1,6 +1,7 @@
-class Card < ApplicationRecord
-  has_many :transactions
+# FIXME: Move to app
+# class Card < ApplicationRecord
+#   has_many :transactions
 
-  belongs_to :account
-  belongs_to :customer
-end
+#   belongs_to :account
+#   belongs_to :customer
+# end

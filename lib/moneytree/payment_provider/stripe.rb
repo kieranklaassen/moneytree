@@ -12,33 +12,16 @@ module Moneytree
         super
       end
 
-      # https://stripe.com/docs/connect/oauth-reference
-      def oauth_link
-        # https://stripe.com/docs/connect/oauth-reference#get-authorize
-        a = URI::HTTPS.build(
-          host: 'connect.stripe.com',
-          path: '/oauth/authorize',
-          query: {
-            response_type: :code,
-            client_id: credentitals[:client_id],
-            scope: PERMISSION,
-            redirect_uri: 'http://localhost:3000/mt/oauth/stripe/callback', # FIXME: use rails url helper and add host
-            'stripe_user[email]': account.email,
-            'stripe_user[url]': account.website,
-            'stripe_user[currency]': account.currency_code
-          }.to_query
-        ).to_s
-      end
-
       def get_access_token(params)
         # https://stripe.com/docs/connect/oauth-reference#post-token
         # FIXME: add error handling
-        response = Stripe::OAuth.token(
-          {
-            grant_type: 'authorization_code',
-            code: params[:code]
-          }
-        )
+        payment_gateway.update! psp_credentials: params
+
+        response = ::Stripe::OAuth.token({
+          grant_type: 'authorization_code',
+          code: params[:code]
+        })
+        payment_gateway.update! psp_credentials: response
       end
 
       def scope_correct?

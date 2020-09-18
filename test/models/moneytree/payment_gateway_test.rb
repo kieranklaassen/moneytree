@@ -5,10 +5,7 @@ module Moneytree
     setup do
       @account = Merchant.create name: 'Mr Boomtown'
       @payment_gateway = Moneytree::PaymentGateway.create(account: @account, moneytree_psp: :stripe)
-      Moneytree.stripe_credentials = {
-        api_key: 'sk_test_1Ee5ODk7hwARsMP64WvRvyHe',
-        client_id: 'ca_I1PszKbm15ZwqDeQJFdW2SU99j33rbPs'
-      }
+      Moneytree.stripe_credentials = Rails.application.credentials.stripe
     end
 
     test 'has one Account' do

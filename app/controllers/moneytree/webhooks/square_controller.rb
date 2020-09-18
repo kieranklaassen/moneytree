@@ -1,6 +1,6 @@
 module Moneytree
   module Webhooks
-    class SquareController < MoneytreeController
+    class SquareController < ApplicationController
       def create
         # Do some callback magic here
       end

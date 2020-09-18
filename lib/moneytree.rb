@@ -17,8 +17,10 @@ module Moneytree
   mattr_accessor :enabled_psps
   mattr_accessor :square_credentials
   mattr_accessor :stripe_credentials
+  mattr_accessor :current_account
 
   @@enabled_psps = PSPS
+  @@current_account = :current_account
 
   def self.setup
     yield self

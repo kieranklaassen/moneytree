@@ -132,6 +132,7 @@ The gem is available as open source under the terms of the [MIT License](https:/
 Everyone interacting in the Moneytree project's codebases, issue trackers, chat rooms and mailing lists is expected to
 follow the [code of conduct](https://github.com/kieranklaassen/moneytree/blob/master/CODE_OF_CONDUCT.md).
 
+```
 rails g model payment_gateway psp_credentials:text moneytree_psp:integer account:references{polymorphic}
 
 owner t.string :name t.text :psp_credentials t.integer :moneytree_psp
@@ -147,7 +148,5 @@ rails g model customers t.string :first_name t.string :last_name t.string :email
 
 rails g model cards t.string :card_brand t.string :last_4 t.integer :expiration_month t.integer :expiration_year
 t.string :cardholder_name t.string :fingerprint t.integer :moneytree_psp t.references :customer t.references :account
-
-```
 
 ```

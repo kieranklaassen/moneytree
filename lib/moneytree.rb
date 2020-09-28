@@ -7,15 +7,13 @@
 require 'moneytree/version'
 require 'moneytree/account'
 require 'moneytree/payment_provider/base'
-# require 'moneytree/payment_provider/square'
 require 'moneytree/payment_provider/stripe'
 require 'moneytree/engine'
 
 module Moneytree
-  PSPS = %i[square stripe braintree].freeze
+  PSPS = %i[stripe].freeze
 
   mattr_accessor :enabled_psps
-  mattr_accessor :square_credentials
   mattr_accessor :stripe_credentials
   mattr_accessor :current_account
 
@@ -30,7 +28,7 @@ module Moneytree
   class Error < StandardError; end
 end
 
-# FIXME: See if we need this, example: https://github.com/ankane/ahoy/blob/master/lib/ahoy/model.rb
+# FIXME: See if we need this
 ActiveSupport.on_load(:action_controller) do
   # include Moneytree::Controller
 end

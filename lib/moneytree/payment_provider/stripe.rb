@@ -13,19 +13,15 @@ module Moneytree
       end
 
       def get_access_token(params)
-        # https://stripe.com/docs/connect/oauth-reference#post-token
         # FIXME: add error handling
-        payment_gateway.update! psp_credentials: params
-
-        response = ::Stripe::OAuth.token({
+        ::Stripe::OAuth.token({
           grant_type: 'authorization_code',
           code: params[:code]
-        })
-        payment_gateway.update! psp_credentials: response
+        }).to_hash
       end
 
-      def scope_correct?
-        payment_gateway.psp_credentials&.dig(:scope) == PERMISSION.to_s
+      def scope
+        PERMISSION.to_s
       end
 
       private

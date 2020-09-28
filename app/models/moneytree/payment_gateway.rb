@@ -4,11 +4,11 @@ module Moneytree
 
     belongs_to :account, polymorphic: true
 
-    enum moneytree_psp: Moneytree::PSPS
+    enum psp: Moneytree::PSPS
     serialize :psp_credentials
     # encrypts :psp_credentials
     # FIXME: enable https://github.com/ankane/lockbox
-    delegate :oauth_link, :scope_correct?, to: :psp
+    delegate :oauth_link, :scope_correct?, to: :payment_provider
 
     # has_many :orders
     # has_many :transactions
@@ -16,15 +16,19 @@ module Moneytree
     # has_many :cards
 
     def oauth_callback(params)
-      update! psp_credentials: psp.get_access_token(params)
+      update! psp_credentials: payment_provider.get_access_token(params)
     end
 
     def psp_connected?
-      moneytree_psp && psp_credentials
+      psp.present? && psp_credentials.present?
     end
 
     def needs_oauth?
       !psp_connected? || !scope_correct?
+    end
+
+    def scope_correct?
+      psp_credentials[:scope] == payment_provider.scope
     end
 
     def charge; end
@@ -33,9 +37,9 @@ module Moneytree
 
     private
 
-    def psp
-      @psp ||=
-        case moneytree_psp
+    def payment_provider
+      @payment_provider ||=
+        case psp
         when 'stripe'
           Moneytree::PaymentProvider::Stripe.new(self)
         # when 'square'

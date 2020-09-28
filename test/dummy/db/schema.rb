@@ -10,22 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_14_155557) do
-
-  create_table "merchants", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+ActiveRecord::Schema.define(version: 20_200_914_155_557) do
+  create_table 'merchants', force: :cascade do |t|
+    t.string 'name'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
   end
 
-  create_table "moneytree_payment_gateways", force: :cascade do |t|
-    t.text "psp_credentials"
-    t.integer "moneytree_psp", null: false
-    t.string "account_type", null: false
-    t.integer "account_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["account_type", "account_id"], name: "index_moneytree_pg_account_type_and_account_id"
+  create_table 'moneytree_payment_gateways', force: :cascade do |t|
+    t.text 'psp_credentials'
+    t.integer 'psp', null: false
+    t.string 'account_type', null: false
+    t.integer 'account_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index %w[account_type account_id], name: 'index_moneytree_pg_account_type_and_account_id'
   end
-
 end

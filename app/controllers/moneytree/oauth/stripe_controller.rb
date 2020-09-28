@@ -6,7 +6,7 @@ module Moneytree
       end
 
       def callback
-        payment_gateway = PaymentGateway.create!(moneytree_psp: 'stripe', account: current_account)
+        payment_gateway = PaymentGateway.create!(psp: 'stripe', account: current_account)
         payment_gateway.oauth_callback(payment_gateway_params)
         redirect_to '/', notice: 'Connected to Stripe'
       end
@@ -33,6 +33,10 @@ module Moneytree
             'stripe_user[currency]': current_account.currency_code
           }.to_query
         ).to_s
+      end
+
+      def current_account
+        send(Moneytree.current_account)
       end
     end
   end

@@ -1,18 +1,8 @@
 # 🚧 WORK IN PROGRESS 🚧
 
-- [ ] OAuth
-  - [ ] Controller actions
-  - [ ] Scopes
-  - [ ] Square
-  - [ ] Stripe
-  - [ ] Braintree
-- [ ] Moneytree models
-  - [ ] Payment gateway, belongs to account
-  - [ ] Cards
-  - [ ] Customers
-  - [ ] Payments
-  - [ ] Refunds
-- [ ] Notifications
+Currently only supports:
+
+- Oauth flow for stripe
 
 # Moneytree 💵 🌴
 
@@ -33,9 +23,9 @@ functionality with almost no work on your end:
 
 Currently we support the following PSP's:
 
-- Square
+- ~~Square~~
 - Stripe
-- Braintree
+- ~~Braintree~~
 
 But if you want to add more PSP's, we make it easy to do so. Read our
 [Contributing](https://github.com/kieranklaassen/moneytree#contributing) section to learn more.
@@ -57,12 +47,9 @@ Add the latest version of Moneytree to your gem Gemfile by running:
 ```bash
 $ bundle add moneytree-rails
 $ bundle install
-$ bundle exec moneytree init
+$ rails g moneytree:install:migrations
+$ rails g db:migrate
 ```
-
-Or your can use environment variables:
-
-FIXME: add
 
 ## Configuration
 
@@ -71,17 +58,39 @@ Do you need to make some changes to how Moneytree is used? You can create an ini
 
 ```ruby
 Moneytree.setup do |config|
-  config.enabled_psps = [:square, :stripe, :braintree]
-  config.account_class = 'Account'
-  config.order_class = 'Order'
-  config.transaction_class = 'Transaction'
-
-  config.square_credentials = {
-    app_id: ENV['SQUARE_APP_ID'],
-    app_secret: ENV['SQUARE_APP_SECRET'],
-    environment: Rails.env.production? : 'production' : 'sandbox',
-    oauth_domain: Rails.env.production? ? 'https://connect.squareup.com' : 'https://connect.squareupsandbox.com'
+  config.current_account = :current_merchant
+  config.stripe_credentials = {
+    api_key: ENV['STRIPE_API_KEY'],
+    client_id: ENV['STRIPE_CLIENT_ID']
   }
+end
+```
+
+Add to your routes and authenticate if needed:
+
+```ruby
+  authenticate :user, ->(u) { u.owner? } do
+    mount Moneytree::Engine => '/moneytree'
+  end
+```
+
+Include account concern into your model and make sure the following attributes work:
+
+```ruby
+class Merchant < ApplicationRecord
+  include Moneytree::Account
+
+  def email
+    owner.email
+  end
+
+  def currency_code
+    currency.code
+  end
+
+  def website
+    'https://www.boomtown.com'
+  end
 end
 ```
 
@@ -94,6 +103,10 @@ need payments for transactional orders. Think, an account holder that sells prod
 transaction attached for the payment. You can name these models however you want yourself.
 
 ### The API
+
+#### Moneytree::PaymentGateway
+
+##### #method here
 
 ## Development
 
@@ -134,3 +147,7 @@ rails g model customers t.string :first_name t.string :last_name t.string :email
 
 rails g model cards t.string :card_brand t.string :last_4 t.integer :expiration_month t.integer :expiration_year
 t.string :cardholder_name t.string :fingerprint t.integer :moneytree_psp t.references :customer t.references :account
+
+```
+
+```

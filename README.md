@@ -19,7 +19,7 @@ functionality with almost no work on your end:
 - 👩‍💻PSP account creation, (with commission)
 - ⚙️ Webhooks
 - 💳 PCI compliance with Javascript libraries
-- 🧲 Platform fees
+- 🧲 Platform fees a.k.a. Market Places
 
 Currently we support the following PSP's:
 
@@ -63,6 +63,7 @@ Moneytree.setup do |config|
     api_key: ENV['STRIPE_API_KEY'],
     client_id: ENV['STRIPE_CLIENT_ID']
   }
+  config.oauth_redirect = '/welcome_back'
 end
 ```
 

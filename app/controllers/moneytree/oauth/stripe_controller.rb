@@ -8,7 +8,7 @@ module Moneytree
       def callback
         payment_gateway = PaymentGateway.create!(psp: 'stripe', account: current_account)
         payment_gateway.oauth_callback(payment_gateway_params)
-        redirect_to '/', notice: 'Connected to Stripe'
+        redirect_to Moneytree.oauth_redirect, notice: 'Connected to Stripe'
       end
 
       private

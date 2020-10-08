@@ -1,8 +1,5 @@
-# FIXME: Move to app
+class Order < ApplicationRecord
+  include Moneytree::Order
 
-# class Order < ApplicationRecord
-#   belongs_to :account
-#   belongs_to :customer
-
-#   has_many :transactions
-# end
+  belongs_to :merchant
+end

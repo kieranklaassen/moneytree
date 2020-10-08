@@ -7,6 +7,7 @@ class CreateMoneytreeTransactions < ActiveRecord::Migration[6.0]
       t.integer :kind, null: false, default: 0
       t.references :order, polymorphic: true, null: false
       t.references :payment_gateway, null: false
+      t.text :psp_error
 
       t.timestamps
     end

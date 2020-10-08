@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 2020_10_08_162843) do
     t.string "order_type", null: false
     t.integer "order_id", null: false
     t.integer "payment_gateway_id", null: false
+    t.text "psp_error"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["order_type", "order_id"], name: "index_moneytree_transactions_on_order_type_and_order_id"

@@ -14,12 +14,12 @@ Currently only supports:
 Moneytree is a rails engine to add multi-PSP payments to your app by extending your own models. It brings the following
 functionality with almost no work on your end:
 
-- 💵💶💷💴 Multi-currency
+- 💵💶💷💴 ~~Multi-currency~~
 - 🔑 OAuth to link your PSP account
-- 👩‍💻PSP account creation, (with commission)
-- ⚙️ Webhooks
-- 💳 PCI compliance with Javascript libraries
-- 🧲 Platform fees a.k.a. Market Places
+- 👩‍💻~~PSP account creation, (with commission)~~
+- ⚙️ ~~Webhooks~~
+- 💳 ~~PCI compliance with Javascript libraries~~
+- 🧲 ~~Platform fees a.k.a. Market Places~~
 
 Currently we support the following PSP's:
 

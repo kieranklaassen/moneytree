@@ -20,8 +20,8 @@ ActiveRecord::Schema.define(version: 20_200_914_155_557) do
   create_table 'moneytree_payment_gateways', force: :cascade do |t|
     t.text 'psp_credentials'
     t.integer 'psp', null: false
-    t.string 'account_type', null: false
-    t.integer 'account_id', null: false
+    t.string 'account_type'
+    t.integer 'account_id'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
     t.index %w[account_type account_id], name: 'index_moneytree_pg_account_type_and_account_id'

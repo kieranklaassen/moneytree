@@ -3,7 +3,7 @@ class CreateMoneytreePaymentGateways < ActiveRecord::Migration[6.0]
     create_table :moneytree_payment_gateways do |t|
       t.text :psp_credentials
       t.integer :psp, null: false
-      t.references :account, polymorphic: true, null: false, index: { name: 'index_moneytree_pg_account_type_and_account_id' }
+      t.references :account, polymorphic: true, index: { name: 'index_moneytree_pg_account_type_and_account_id' }
 
       t.timestamps
     end

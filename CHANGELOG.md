@@ -1,6 +1,10 @@
 ## Master
 
-## 0.1.2
+## 0.1.3 (2020-10-08)
+
+- Fix account to be `null: true` since it is a has_one relation
+
+## 0.1.2 (2020-09-29)
 
 - Add `oauth_redirect` setting to set a custom path to return after the OAuth flow
 

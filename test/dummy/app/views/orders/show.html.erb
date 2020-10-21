@@ -1,4 +1,8 @@
-<p id="notice"><%= notice %></p>
-
+<ul id="notice"><%= notice %></ul>
+<ul>
+  <% @order.moneytree_transactions.each do |transaction| %>
+    <li><%= transaction.inspect %></li>
+  <% end %>
+</ul>
 <%= link_to 'Edit', edit_order_path(@order) %> |
 <%= link_to 'Back', orders_path %>

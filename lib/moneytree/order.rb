@@ -14,7 +14,7 @@ module Moneytree
 
     def charge!(_payment_method, account, amount, app_fee_amount = 0)
       # TODO: add error handling
-      moneytree_transactions.create!(account: account, amount: amount, app_fee_amount: app_fee_amount)
+      moneytree_transactions.create!(account: account, amount: amount, app_fee_amount: app_fee_amount, metadata: { order_id: id })
     end
 
     # def charge_later(**args)

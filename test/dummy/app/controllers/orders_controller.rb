@@ -11,9 +11,8 @@ class OrdersController < ApplicationController
 
   # GET /orders/new
   def new
-    Merchant.create! name: 'TestName' unless Merchant.any?
-    p = Merchant.last.moneytree_payment_gateway
-    redirect_to moneytree.oauth_stripe_new_path if p.blank? || p.needs_oauth?
+    payment_gateway = current_merchant.moneytree_payment_gateway
+    redirect_to moneytree.oauth_stripe_new_path if payment_gateway.blank? || payment_gateway.needs_oauth?
 
     @order = Order.new
   end
@@ -24,6 +23,13 @@ class OrdersController < ApplicationController
   # POST /orders
   def create
     @order = Order.new(order_params)
+
+    transaction = @order.moneytree_transactions.new(
+      payment_gateway: current_merchant.moneytree_payment_gateway,
+      amount: 10.0,
+      details: { card_token: params[:cardToken] },
+      app_fee_amount: 1.0
+    )
 
     if @order.save
       redirect_to @order, notice: 'Order was successfully created.'

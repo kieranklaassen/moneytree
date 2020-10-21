@@ -27,7 +27,7 @@ module Moneytree
             response_type: :code,
             client_id: Moneytree.stripe_credentials[:client_id],
             scope: PaymentProvider::Stripe::PERMISSION,
-            redirect_uri: oauth_stripe_callback_url, # FIXME: use rails url helper and add host
+            redirect_uri: oauth_stripe_callback_url,
             'stripe_user[email]': current_account.email,
             'stripe_user[url]': current_account.website,
             'stripe_user[currency]': current_account.currency_code

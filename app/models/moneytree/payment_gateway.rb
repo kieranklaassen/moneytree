@@ -8,7 +8,7 @@ module Moneytree
     serialize :psp_credentials
     # encrypts :psp_credentials
     # FIXME: enable https://github.com/ankane/lockbox
-    delegate :oauth_link, :scope_correct?, to: :payment_provider
+    delegate :oauth_link, :scope_correct?, :charge, :refund, to: :payment_provider
 
     # has_many :orders
     # has_many :transactions
@@ -31,16 +31,13 @@ module Moneytree
       psp_credentials[:scope] == payment_provider.scope
     end
 
-    def charge; end
-
-    def refund; end
-
     private
 
     def payment_provider
       @payment_provider ||=
         case psp
         when 'stripe'
+          # TODO: see if we only need to pass credentials
           Moneytree::PaymentProvider::Stripe.new(self)
         # when 'square'
         #   Moneytree::PaymentProvider::Square.new(self)

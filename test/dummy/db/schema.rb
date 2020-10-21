@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_08_162843) do
+ActiveRecord::Schema.define(version: 2020_10_09_145605) do
 
   create_table "merchants", force: :cascade do |t|
     t.string "name"
@@ -44,11 +44,8 @@ ActiveRecord::Schema.define(version: 2020_10_08_162843) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.integer "merchant_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["merchant_id"], name: "index_orders_on_merchant_id"
   end
 
-  add_foreign_key "orders", "merchants"
 end

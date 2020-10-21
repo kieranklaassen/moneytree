@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :set_order, only: [:show, :edit, :update, :destroy]
+  before_action :set_order, only: %i[show edit update destroy]
 
   # GET /orders
   def index
@@ -7,17 +7,19 @@ class OrdersController < ApplicationController
   end
 
   # GET /orders/1
-  def show
-  end
+  def show; end
 
   # GET /orders/new
   def new
+    Merchant.create! name: 'TestName' unless Merchant.any?
+    p = Merchant.last.moneytree_payment_gateway
+    redirect_to moneytree.oauth_stripe_new_path if p.blank? || p.needs_oauth?
+
     @order = Order.new
   end
 
   # GET /orders/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /orders
   def create
@@ -46,13 +48,14 @@ class OrdersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_order
-      @order = Order.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def order_params
-      params.fetch(:order, {})
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_order
+    @order = Order.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def order_params
+    params.fetch(:order, {})
+  end
 end

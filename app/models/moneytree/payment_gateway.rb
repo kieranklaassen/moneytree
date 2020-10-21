@@ -1,7 +1,5 @@
 module Moneytree
   class PaymentGateway < ApplicationRecord
-    include Moneytree::Account
-
     belongs_to :account, polymorphic: true
 
     enum psp: Moneytree::PSPS

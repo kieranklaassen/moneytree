@@ -4,7 +4,7 @@ module Moneytree
     belongs_to :order, polymorphic: true
 
     enum kind: %i[payment refund]
-    enum status: %i[initialized processing completed failed]
+    enum status: %i[initialized pending completed failed]
     # FIXME: add all validation and logic stuff here :)
 
     serialize :details

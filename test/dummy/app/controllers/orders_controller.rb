@@ -27,7 +27,7 @@ class OrdersController < ApplicationController
     transaction = @order.moneytree_transactions.new(
       payment_gateway: current_merchant.moneytree_payment_gateway,
       amount: 10.0,
-      details: { card_token: params[:cardToken] },
+      details: { card_token: params[:card_token] },
       app_fee_amount: 1.0
     )
 

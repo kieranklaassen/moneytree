@@ -39,8 +39,11 @@ module Moneytree
           },
           stripe_account: payment_gateway.psp_credentials[:stripe_user_id]
         )
-
-        TransactionResponse.new(response[:status].to_sym, response[:failure_message])
+        # succeeded, pending, or failed
+        TransactionResponse.new(
+          { succeeded: :success, pending: :pending, failed: :failed }[response[:status].to_sym],
+          response[:failure_message]
+        )
       rescue ::Stripe::StripeError => e
         TransactionResponse.new(:failed, e.message)
       end

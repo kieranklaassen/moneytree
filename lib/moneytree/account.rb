@@ -5,7 +5,7 @@ module Moneytree
     extend ActiveSupport::Concern
 
     included do
-      has_one :moneytree_payment_gateway, class_name: 'Moneytree::PaymentGateway', foreign_key: 'account_id'
+      has_one :moneytree_payment_gateway, class_name: 'Moneytree::PaymentGateway', foreign_key: 'account_id', inverse_of: :account, as: :account
     end
   end
 end

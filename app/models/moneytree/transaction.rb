@@ -7,6 +7,8 @@ module Moneytree
     enum status: %i[initialized processing completed failed]
     # FIXME: add all validation and logic stuff here :)
 
+    serialize :details
+
     after_create_commit :execute_transaction
 
     private

@@ -2,6 +2,14 @@
 <ul>
   <% @order.moneytree_transactions.each do |transaction| %>
     <li><%= transaction.inspect %></li>
+    <% if transaction.is_a?(Moneytree::Payment) %>
+      <%= form_with(model: transaction.refunds.new, local: true) do |f| %>
+        <%= f.number_field :amount %>
+        <%= f.text_field :refund_reason, placeholder: 'Reason' %>
+        <%= f.hidden_field :payment_id, value: transaction.id %>
+        <%= f.submit %>
+      <% end %>
+    <% end %>
   <% end %>
 </ul>
 <%= link_to 'Edit', edit_order_path(@order) %> |

@@ -2,6 +2,8 @@ module Moneytree
   class Refund < Transaction
     belongs_to :payment, class_name: 'Moneytree::Payment'
 
+    before_validation :set_order, :set_payment_gateway
+
     validates_presence_of :payment
 
     validates_numericality_of :amount, less_than: 0
@@ -16,10 +18,19 @@ module Moneytree
         payment_gateway.refund(
           amount,
           payment.details,
-          refund_reason,
           metadata: metadata.merge(moneytree_transaction_id: id)
         )
       )
+    end
+
+    # validates_presence_of :payment
+    def set_order
+      self.order ||= payment&.order
+    end
+
+    # validates_presence_of :payment
+    def set_payment_gateway
+      self.payment_gateway ||= payment&.payment_gateway
     end
 
     # validates
@@ -28,7 +39,7 @@ module Moneytree
     end
 
     # validates
-    def order_matches_payment
+    def gateway_matches_payment
       errors.add(:payment_gateway_id, :mismatch) if payment_gateway_id != payment&.payment_gateway_id
     end
   end

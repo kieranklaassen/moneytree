@@ -15,16 +15,16 @@ module Moneytree
 
     def process_response(response)
       if response.success?
-        update(
+        update!(
           status: :completed,
           psp_error: response.message,
-          details: details.merge(response.body)
+          details: (details || {}).merge(response.body)
         )
       else
         # FIXME: pending state
-        update(
+        update!(
           status: :failed,
-          psp_error: respose.message
+          psp_error: response.message
         )
       end
     end

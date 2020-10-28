@@ -49,17 +49,26 @@ module Moneytree
         TransactionResponse.new(:failed, e.message)
       end
 
-      def refund(amount, details, reason, metadata:)
+      def refund(amount, details, metadata:)
         response = ::Stripe::Refund.create(
           {
             charge: details[:charge_id],
             amount: (-amount * 100).to_i,
             metadata: metadata,
-            reason: reason,
             refund_application_fee: Moneytree.refund_application_fee
-          }
+          },
+          stripe_account: payment_gateway.psp_credentials[:stripe_user_id]
         )
-    end
+
+        # succeeded, pending, or failed
+        TransactionResponse.new(
+          { succeeded: :success, pending: :pending, failed: :failed }[response[:status].to_sym],
+          response[:failure_message],
+          { refund_id: response[:id] }
+        )
+      rescue ::Stripe::StripeError => e
+        TransactionResponse.new(:failed, e.message)
+      end
 
       private
 

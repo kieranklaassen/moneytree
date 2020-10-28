@@ -4,11 +4,13 @@ class CreateMoneytreeTransactions < ActiveRecord::Migration[6.0]
       t.decimal :amount, null: false, default: 0
       t.decimal :app_fee_amount, null: false, default: 0
       t.integer :status, null: false, default: 0
-      t.integer :kind, null: false, default: 0
+      t.string :type, null: false, default: 'Moneytree::Payment'
       t.references :order, polymorphic: true, null: false
       t.references :payment_gateway, null: false
+      t.references :payment, foreign_key: { to_table: :moneytree_transactions }
       t.text :psp_error
       t.text :details
+      t.text :refund_reason
 
       t.timestamps
     end

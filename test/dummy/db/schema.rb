@@ -32,16 +32,19 @@ ActiveRecord::Schema.define(version: 2020_10_09_145605) do
     t.decimal "amount", default: "0.0", null: false
     t.decimal "app_fee_amount", default: "0.0", null: false
     t.integer "status", default: 0, null: false
-    t.integer "kind", default: 0, null: false
+    t.string "type", default: "Moneytree::Payment", null: false
     t.string "order_type", null: false
     t.integer "order_id", null: false
     t.integer "payment_gateway_id", null: false
+    t.integer "payment_id"
     t.text "psp_error"
     t.text "details"
+    t.text "refund_reason"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["order_type", "order_id"], name: "index_moneytree_transactions_on_order_type_and_order_id"
     t.index ["payment_gateway_id"], name: "index_moneytree_transactions_on_payment_gateway_id"
+    t.index ["payment_id"], name: "index_moneytree_transactions_on_payment_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -49,4 +52,5 @@ ActiveRecord::Schema.define(version: 2020_10_09_145605) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "moneytree_transactions", "moneytree_transactions", column: "payment_id"
 end

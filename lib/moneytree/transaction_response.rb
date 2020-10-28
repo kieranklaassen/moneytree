@@ -2,7 +2,7 @@ module Moneytree
   class TransactionResponse
     attr_reader :message, :status, :body
 
-    def initialize(status, message = '', body)
+    def initialize(status, message, body = {})
       @status = status
       @message = message
       @body = body

@@ -1,9 +1,5 @@
 # 🚧 WORK IN PROGRESS 🚧
 
-Currently only supports:
-
-- Oauth flow for stripe
-
 # Moneytree 💵 🌴
 
 [![Actions Status](https://github.com/kieranklaassen/moneytree/workflows/build/badge.svg)](https://github.com/kieranklaassen/moneytree/actions)
@@ -14,18 +10,18 @@ Currently only supports:
 Moneytree is a rails engine to add multi-PSP payments to your app by extending your own models. It brings the following
 functionality with almost no work on your end:
 
-- 💵💶💷💴 ~~Multi-currency~~
+- 💵💶💷💴 Multi-currency
 - 🔑 OAuth to link your PSP account
-- 👩‍💻~~PSP account creation, (with commission)~~
-- ⚙️ ~~Webhooks~~
-- 💳 ~~PCI compliance with Javascript libraries~~
-- 🧲 ~~Platform fees a.k.a. Market Places~~
+- 👩‍💻 PSP account creation, (with commission)
+- ⚙️ ~~Webhooks~~ comming soon
+- 💳 ~~PCI compliance with Javascript libraries~~ comming soon
+- 🧲 Platform fees a.k.a. Market Places
 
 Currently we support the following PSP's:
 
-- ~~Square~~
+- ~~Square~~ comming soon
 - Stripe
-- ~~Braintree~~
+- ~~Braintree~~ comming soon
 
 But if you want to add more PSP's, we make it easy to do so. Read our
 [Contributing](https://github.com/kieranklaassen/moneytree#contributing) section to learn more.
@@ -53,6 +49,8 @@ $ rails g db:migrate
 
 ## Configuration
 
+### Initializer
+
 Do you need to make some changes to how Moneytree is used? You can create an initializer
 `config/initializers/moneytree.rb`
 
@@ -64,18 +62,23 @@ Moneytree.setup do |config|
     client_id: ENV['STRIPE_CLIENT_ID']
   }
   config.oauth_redirect = '/welcome_back'
+  config.refund_application_fee = true # false by default
 end
 ```
 
-Add to your routes and authenticate if needed:
+### Routes
+
+Add to your routes and authenticate if needed to make sure only admins can integrate with OAuth.
 
 ```ruby
-  authenticate :user, ->(u) { u.owner? } do
+  authenticate :user, ->(u) { u.admin? } do
     mount Moneytree::Engine => '/moneytree'
   end
 ```
 
-Include account concern into your model and make sure the following attributes work:
+### Models
+
+Include account concern into your models and make sure the following attributes work:
 
 ```ruby
 class Merchant < ApplicationRecord
@@ -92,6 +95,15 @@ class Merchant < ApplicationRecord
   def website
     'https://www.boomtown.com'
   end
+end
+```
+
+And add `Moneytree::Order` concern to the model that will be the parent for all the transactions. In most cases this
+will be an order. This model will keep a balance and you can add multiple payments and refunds to it.
+
+```ruby
+class Order < ApplicationRecord
+  include Moneytree::Order
 end
 ```
 
@@ -126,7 +138,7 @@ intended to be a safe, welcoming space for collaboration, and contributors are e
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+The gem is available as open-source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
 
 ## Code of Conduct
 

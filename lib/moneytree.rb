@@ -19,10 +19,12 @@ module Moneytree
   mattr_accessor :stripe_credentials
   mattr_accessor :current_account
   mattr_accessor :oauth_redirect
+  mattr_accessor :refund_application_fee
 
   @@enabled_psps = PSPS
   @@current_account = :current_account
   @@oauth_redirect = '/'
+  @@refund_application_fee = false
 
   def self.setup
     yield self

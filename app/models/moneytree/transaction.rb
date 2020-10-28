@@ -1,8 +1,5 @@
 module Moneytree
   class Transaction < ApplicationRecord
-    self.abstract_class = true
-    self.table_name = 'moneytree_transactions'
-
     belongs_to :payment_gateway
     belongs_to :order, polymorphic: true
 

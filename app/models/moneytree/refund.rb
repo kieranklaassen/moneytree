@@ -7,7 +7,7 @@ module Moneytree
     validates_numericality_of :amount, less_than: 0
     validates_numericality_of :app_fee_amount, less_than_or_equal_to: 0
 
-    validates :order_matches_payment, :gateway_matches_payment
+    validate :order_matches_payment, :gateway_matches_payment
 
     private
 

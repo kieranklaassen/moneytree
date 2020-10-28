@@ -8,17 +8,8 @@ module Moneytree
       has_many :moneytree_transactions, class_name: 'Moneytree::Transaction', foreign_key: 'order_id', inverse_of: :order, as: :order
     end
 
-    # def charge(**args)
-    #   moneytree_transactions.new(**args)
-    # end
-
-    def charge!(_payment_method, account, amount, app_fee_amount = 0)
-      # TODO: add error handling
-      moneytree_transactions.create!(account: account, amount: amount, app_fee_amount: app_fee_amount, metadata: { order_id: id })
+    def new_payment(*args)
+      moneytree_transactions << Payment.new(*args)
     end
-
-    # def charge_later(**args)
-    #   moneytree_transactions.create_later(**args)
-    # end
   end
 end

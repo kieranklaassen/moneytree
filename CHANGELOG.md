@@ -1,5 +1,7 @@
 ## Master
 
+## 0.1.4 (2020-11-04)
+
 - Add `Moneytree::Order` concern that links transactions and enables payments
 - Add charge and refund capabilities
 - Add webhooks

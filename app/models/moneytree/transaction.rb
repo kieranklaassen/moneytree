@@ -11,8 +11,6 @@ module Moneytree
 
     after_create_commit :execute_transaction
 
-    private
-
     def process_response(response)
       if response.success?
         update!(

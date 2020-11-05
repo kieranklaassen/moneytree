@@ -13,7 +13,7 @@ functionality with almost no work on your end:
 - 💵💶💷💴 Multi-currency
 - 🔑 OAuth to link your PSP account
 - 👩‍💻 PSP account creation, (with commission)
-- ⚙️ ~~Webhooks~~ comming soon
+- ⚙️ Webhooks
 - 💳 ~~PCI compliance with Javascript libraries~~ comming soon
 - 🧲 Platform fees a.k.a. Market Places
 

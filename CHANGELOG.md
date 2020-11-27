@@ -1,5 +1,9 @@
 ## Master
 
+## 0.1.5 (2020-11-27)
+
+- Fix an autoloading issue causing Moneytree to conflict with your own Rails app if you have a model called `PaymentGateway`
+
 ## 0.1.4 (2020-11-04)
 
 - Add `Moneytree::Order` concern that links transactions and enables payments

@@ -6,7 +6,8 @@ module Moneytree
       end
 
       def callback
-        payment_gateway = PaymentGateway.create!(psp: 'stripe', account: current_account)
+        # TODO: Remove this module prefix once we figure out how to properly autoload this.
+        payment_gateway = Moneytree::PaymentGateway.create!(psp: 'stripe', account: current_account)
         payment_gateway.oauth_callback(payment_gateway_params)
         redirect_to Moneytree.oauth_redirect, notice: 'Connected to Stripe'
       end

@@ -9,7 +9,9 @@ module Moneytree
     end
 
     def new_payment(*args)
-      moneytree_transactions << Payment.new(*args)
+      payment = Payment.new(*args)
+      moneytree_transactions << payment
+      payment
     end
   end
 end

@@ -1,5 +1,9 @@
 ## Master
 
+## 0.1.8
+
+- Fix a bug causing Moneytree to crash on payment
+
 ## 0.1.7
 
 - Add `Moneytree::PaymentGateway#transactions`

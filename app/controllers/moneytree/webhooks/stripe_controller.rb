@@ -1,6 +1,6 @@
 module Moneytree
   module Webhooks
-    class StripeController < ApplicationController
+    class StripeController < Moneytree::ApplicationController
       skip_before_action :verify_authenticity_token
 
       def create
@@ -29,7 +29,7 @@ module Moneytree
         return if transaction.completed?
 
         transaction.process_response(
-          TransactionResponse.new(:success, '', { charge_id: stripe_object.id })
+          Moneytree::TransactionResponse.new(:success, '', { charge_id: stripe_object.id })
         )
 
         if Moneytree.order_status_trigger_method
@@ -47,7 +47,7 @@ module Moneytree
           next if refund.completed?
 
           refund.process_response(
-            TransactionResponse.new(:success, '')
+            Moneytree::TransactionResponse.new(:success, '')
           )
           if Moneytree.order_status_trigger_method
             transaction.order.send(Moneytree.order_status_trigger_method, transaction)
@@ -56,7 +56,7 @@ module Moneytree
       end
 
       def transaction
-        @transaction ||= Transaction.find(stripe_object.metadata[:moneytree_transaction_id])
+        @transaction ||= Moneytree::Transaction.find(stripe_object.metadata[:moneytree_transaction_id])
       end
 
       def stripe_object

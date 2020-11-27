@@ -1,6 +1,6 @@
 module Moneytree
   module Oauth
-    class StripeController < ApplicationController
+    class StripeController < Moneytree::ApplicationController
       def new
         redirect_to stripe_oauth_url
       end
@@ -27,7 +27,7 @@ module Moneytree
           query: {
             response_type: :code,
             client_id: Moneytree.stripe_credentials[:client_id],
-            scope: PaymentProvider::Stripe::PERMISSION,
+            scope: Moneytree::PaymentProvider::Stripe::PERMISSION,
             redirect_uri: oauth_stripe_callback_url,
             'stripe_user[email]': current_account.email,
             'stripe_user[url]': current_account.website,

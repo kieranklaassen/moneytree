@@ -1,5 +1,5 @@
 module Moneytree
-  class Refund < Transaction
+  class Refund < Moneytree::Transaction
     belongs_to :payment, class_name: 'Moneytree::Payment'
 
     before_validation :set_order, :set_payment_gateway

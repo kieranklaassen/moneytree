@@ -1,5 +1,9 @@
 ## Master
 
+## 0.1.9
+
+- Fix all implicit constants in /app
+
 ## 0.1.8
 
 - Fix a bug causing Moneytree to crash on payment

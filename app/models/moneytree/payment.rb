@@ -1,6 +1,6 @@
 module Moneytree
-  class Payment < Transaction
-    has_many :refunds, class_name: 'Refund'
+  class Payment < Moneytree::Transaction
+    has_many :refunds, class_name: 'Moneytree::Refund'
 
     validates_absence_of :payment_id
 

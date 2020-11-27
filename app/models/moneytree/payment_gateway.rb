@@ -8,10 +8,7 @@ module Moneytree
     # FIXME: enable https://github.com/ankane/lockbox
     delegate :oauth_link, :scope_correct?, :charge, :refund, to: :payment_provider
 
-    # has_many :orders
-    # has_many :transactions
-    # has_many :customers
-    # has_many :cards
+    has_many :transactions
 
     def oauth_callback(params)
       update! psp_credentials: payment_provider.get_access_token(params)

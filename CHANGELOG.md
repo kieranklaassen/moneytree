@@ -1,5 +1,9 @@
 ## Master
 
+## 0.1.7
+
+- Add `Moneytree::PaymentGateway#transactions`
+
 ## 0.1.6
 
 - Add support for account-based callbacks on OAuth2 authentication completion

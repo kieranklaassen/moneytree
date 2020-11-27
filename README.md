@@ -95,6 +95,11 @@ class Merchant < ApplicationRecord
   def website
     'https://www.boomtown.com'
   end
+
+  # Optional, will be called by Moneytree after authenticating with the PSP
+  def moneytree_oauth_callback
+    puts "Hurray, I just got associated with a Moneytree gateway!"
+  end
 end
 ```
 

@@ -15,6 +15,7 @@ module Moneytree
 
     def oauth_callback(params)
       update! psp_credentials: payment_provider.get_access_token(params)
+      account.send(:moneytree_oauth_callback) if account.respond_to?(:moneytree_oauth_callback, true)
     end
 
     def psp_connected?

@@ -1,5 +1,7 @@
 ## Master
 
+## 0.1.10 (2020-11-27)
+
 - Add Card object for transactions
 
 ## 0.1.9 (2020-11-27)

@@ -9,7 +9,13 @@ module Moneytree
 
     serialize :details
 
+    delegate :payment_provider, to: :payment_gateway
+
     after_create_commit :execute_transaction
+
+    def card
+      payment_provider.card_for(self)
+    end
 
     def process_response(response)
       if response.success?

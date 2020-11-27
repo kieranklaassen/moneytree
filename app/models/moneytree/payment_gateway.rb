@@ -27,8 +27,6 @@ module Moneytree
       psp_credentials[:scope] == payment_provider.scope
     end
 
-    private
-
     def payment_provider
       @payment_provider ||=
         case psp

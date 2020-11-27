@@ -43,7 +43,10 @@ module Moneytree
         TransactionResponse.new(
           { succeeded: :success, pending: :pending, failed: :failed }[response[:status].to_sym],
           response[:failure_message],
-          { charge_id: response[:id] }
+          {
+            charge_id: response[:id],
+            card: response[:payment_method_details][:card]
+          }
         )
       rescue ::Stripe::StripeError => e
         TransactionResponse.new(:failed, e.message)
@@ -68,6 +71,18 @@ module Moneytree
         )
       rescue ::Stripe::StripeError => e
         TransactionResponse.new(:failed, e.message)
+      end
+
+      def card_for(transaction)
+        Card.new(
+          last4: transaction.details[:card][:last4],
+          exp_month: transaction.details[:card][:exp_month],
+          exp_year: transaction.details[:card][:exp_year],
+          fingerprint: transaction.details[:card][:fingerprint],
+          brand: transaction.details[:card][:brand],
+          address_zip: transaction.details[:card][:address_zip],
+          country: transaction.details[:card][:country]
+        )
       end
 
       private

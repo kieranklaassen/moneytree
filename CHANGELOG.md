@@ -1,18 +1,20 @@
 ## Master
 
-## 0.1.9
+- Add Card object for transactions
+
+## 0.1.9 (2020-11-27)
 
 - Fix all implicit constants in /app
 
-## 0.1.8
+## 0.1.8 (2020-11-27)
 
 - Fix a bug causing Moneytree to crash on payment
 
-## 0.1.7
+## 0.1.7 (2020-11-27)
 
 - Add `Moneytree::PaymentGateway#transactions`
 
-## 0.1.6
+## 0.1.6 (2020-11-27)
 
 - Add support for account-based callbacks on OAuth2 authentication completion
 

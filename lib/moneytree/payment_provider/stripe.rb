@@ -26,7 +26,7 @@ module Moneytree
         PERMISSION.to_s
       end
 
-      def charge(amount, details, app_fee_amount: 0, description: "Charge for #{account.name}", metadata:)
+      def charge(amount, details, metadata:, app_fee_amount: 0, description: "Charge for #{account.name}")
         # `source` is obtained with Stripe.js; see https://stripe.com/docs/payments/accept-a-payment-charges#web-create-token
         response = ::Stripe::Charge.create(
           {
@@ -45,7 +45,8 @@ module Moneytree
           response[:failure_message],
           {
             charge_id: response[:id],
-            card: response[:payment_method_details][:card]
+            card: response[:payment_method_details][:card],
+            has_application_fee: !app_fee_amount.zero?
           }
         )
       rescue ::Stripe::StripeError => e
@@ -58,7 +59,7 @@ module Moneytree
             charge: details[:charge_id],
             amount: (-amount * 100).to_i,
             metadata: metadata,
-            refund_application_fee: Moneytree.refund_application_fee
+            refund_application_fee: details[:has_application_fee] && Moneytree.refund_application_fee
           },
           stripe_account: payment_gateway.psp_credentials[:stripe_user_id]
         )

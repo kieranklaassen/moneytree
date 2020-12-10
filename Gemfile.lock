@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    moneytree-rails (0.1.10)
+    moneytree-rails (0.1.11)
       rails (>= 4.2)
 
 GEM

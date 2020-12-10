@@ -1,5 +1,9 @@
 ## Master
 
+## 0.1.11 (2020-12-10)
+
+- Keep track of whether an application fee was charged
+
 ## 0.1.10 (2020-11-27)
 
 - Add Card object for transactions

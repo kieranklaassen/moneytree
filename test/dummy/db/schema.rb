@@ -23,6 +23,8 @@ ActiveRecord::Schema.define(version: 2020_10_09_145605) do
     t.integer "psp", null: false
     t.string "account_type"
     t.integer "account_id"
+    t.boolean "onboarding_completed", default: false, null: false
+    t.boolean "marketplace_capable", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["account_type", "account_id"], name: "index_moneytree_pg_account_type_and_account_id"

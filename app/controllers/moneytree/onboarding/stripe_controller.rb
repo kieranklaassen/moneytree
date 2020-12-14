@@ -38,8 +38,7 @@ module Moneytree
       private
 
       def account_prefill_data
-        # current_account.onboarding_data
-        {}
+        current_account.moneytree_onboarding_data
       end
 
       def current_account

@@ -13,26 +13,8 @@ module Moneytree
     # onboarding form from a PSP.
     #
     # @return [Hash]
-    def onboarding_data
-      {
-        business_type: 'company',
-        country: 'US',
-        email: 'user@example.com',
-        company: {
-          name: 'User Example LLC',
-          address: {
-            line1: '1 N State St',
-            line2: '',
-            postal_code: '60602',
-            city: 'Chicago',
-            state: 'IL',
-            country: 'US'
-          },
-          phone: '+17735551234',
-          structure: 'multi_member_llc',
-          tax_id: '980000000'
-        }
-      }
+    def moneytree_onboarding_data
+      {}
     end
   end
 end

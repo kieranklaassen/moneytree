@@ -2,18 +2,21 @@ module Moneytree
   module Onboarding
     class StripeController < Moneytree::ApplicationController
       def new
-        ::Stripe.api_key = Moneytree.stripe_credentials[:api_key]
-        account = ::Stripe::Account.create({
-          type: 'express',
-          capabilities: { card_payments: { requested: true }, transfers: { requested: true } }
-        }.merge(account_prefill_data))
-
-        Moneytree::PaymentGateway.create!(
+        payment_gateway = Moneytree::PaymentGateway.create!(
           psp: 'stripe',
           account: current_account,
-          marketplace_capable: true,
-          psp_credentials: { account_id: account.id }
+          marketplace_capable: true
         )
+
+        ::Stripe.api_key = Moneytree.stripe_credentials[:api_key]
+
+        account = ::Stripe::Account.create({
+          type: 'express',
+          capabilities: { card_payments: { requested: true }, transfers: { requested: true } },
+          metadata: { moneytree_id: payment_gateway.id }
+        }.merge(account_prefill_data))
+
+        payment_gateway.update! psp_credentials: { account_id: account.id }
 
         session[:account_id] = account.id
         redirect_to onboarding_stripe_onboard_path

@@ -9,6 +9,8 @@ module Moneytree
           process_charge!
         when 'charge.refunded'
           process_refund!
+        when 'account.updated'
+          process_account_updated!
         else
           puts "Unhandled event type: #{webhook_params.type}"
         end
@@ -53,6 +55,11 @@ module Moneytree
             transaction.order.send(Moneytree.order_status_trigger_method, transaction)
           end
         end
+      end
+
+      def process_account_updated!
+        payment_gateway = PaymentGateway.find_by!(stripe_object.metadata.moneytree_id.to_i)
+        payment_gateway.update!(onboarded: true) if stripe_object.details_submitted && !payment_gateway.onboarded?
       end
 
       def transaction

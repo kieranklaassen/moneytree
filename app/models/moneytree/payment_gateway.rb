@@ -1,6 +1,6 @@
 module Moneytree
   class PaymentGateway < ApplicationRecord
-    belongs_to :account, polymorphic: true
+    belongs_to :account, polymorphic: true, optional: true
 
     enum psp: Moneytree::PSPS
     serialize :psp_credentials

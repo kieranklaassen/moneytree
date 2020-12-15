@@ -1,14 +1,13 @@
 module Moneytree
   module Onboarding
     class StripeController < Moneytree::ApplicationController
+      before_action { ::Stripe.api_key = Moneytree.stripe_credentials[:api_key] }
 
       def new
         payment_gateway = current_account.create_moneytree_payment_gateway!(
           psp: 'stripe',
           marketplace_capable: true
         )
-
-        ::Stripe.api_key = Moneytree.stripe_credentials[:api_key]
 
         account = ::Stripe::Account.create({
           type: 'express',
@@ -23,16 +22,24 @@ module Moneytree
       end
 
       def onboard
-        account_link = Stripe::AccountLink.create(
+        account_link = ::Stripe::AccountLink.create(
           {
             account: session[:account_id],
             refresh_url: onboarding_stripe_onboard_url,
-            return_url: Moneytree.oauth_redirect,
+            return_url: onboarding_stripe_complete_url,
             type: 'account_onboarding'
           }
         )
 
         redirect_to account_link.url
+      end
+
+      def complete
+        account = ::Stripe::Account.retrieve(session[:account_id])
+        payment_gateway = PaymentGateway.find(account.metadata.moneytree_id)
+        payment_gateway.update!(onboarding_completed: account.details_submitted)
+
+        redirect_to Moneytree.oauth_redirect
       end
 
       private

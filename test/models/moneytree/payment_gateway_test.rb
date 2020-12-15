@@ -4,7 +4,7 @@ module Moneytree
   class PaymentGatewayTest < ActiveSupport::TestCase
     setup do
       @account = Merchant.create name: 'Mr Boomtown'
-      @payment_gateway = Moneytree::PaymentGateway.create(account: @account, psp: :stripe)
+      @payment_gateway = @account.create_moneytree_payment_gateway(psp: :stripe)
       Moneytree.stripe_credentials = Rails.application.credentials.stripe
     end
 

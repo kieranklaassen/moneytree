@@ -1,10 +1,10 @@
 module Moneytree
   module Onboarding
     class StripeController < Moneytree::ApplicationController
+
       def new
-        payment_gateway = Moneytree::PaymentGateway.create!(
+        payment_gateway = current_account.create_moneytree_payment_gateway!(
           psp: 'stripe',
-          account: current_account,
           marketplace_capable: true
         )
 

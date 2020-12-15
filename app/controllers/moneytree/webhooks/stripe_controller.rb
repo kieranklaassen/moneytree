@@ -58,8 +58,10 @@ module Moneytree
       end
 
       def process_account_updated!
-        payment_gateway = PaymentGateway.find_by!(stripe_object.metadata.moneytree_id.to_i)
-        payment_gateway.update!(onboarded: true) if stripe_object.details_submitted && !payment_gateway.onboarded?
+        payment_gateway = PaymentGateway.find(stripe_object.metadata.moneytree_id.to_i)
+        if stripe_object.details_submitted && !payment_gateway.onboarding_completed?
+          payment_gateway.update!(onboarding_completed: true)
+        end
       end
 
       def transaction

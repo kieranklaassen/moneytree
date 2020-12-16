@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 2020_12_16_164908) do
     t.integer "payout_id"
     t.integer "transaction_id"
     t.string "type", default: "Moneytree::Payout", null: false
+    t.integer "status", default: 0, null: false
     t.decimal "amount"
     t.text "details"
     t.text "psp_error"

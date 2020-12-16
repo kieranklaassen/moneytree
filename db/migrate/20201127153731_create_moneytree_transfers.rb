@@ -6,6 +6,7 @@ class CreateMoneytreeTransfers < ActiveRecord::Migration[6.0]
       t.references :payout, foreign_key: { to_table: :moneytree_transfers }
       t.references :transaction, foreign_key: { to_table: :moneytree_transactions }
       t.string :type, null: false, default: 'Moneytree::Payout'
+      t.integer :status, null: false, default: 0
       t.decimal :amount
       t.text :details
       t.text :psp_error

@@ -1,6 +1,8 @@
 module Moneytree
   module Webhooks
     class StripeController < Moneytree::ApplicationController
+      include Moneytree::StripeConfirmable
+
       skip_before_action :verify_authenticity_token
 
       def create
@@ -9,6 +11,8 @@ module Moneytree
           process_charge!
         when 'charge.refunded'
           process_refund!
+        when 'account.updated'
+          process_account_updated!
         else
           puts "Unhandled event type: #{webhook_params.type}"
         end
@@ -53,6 +57,11 @@ module Moneytree
             transaction.order.send(Moneytree.order_status_trigger_method, transaction)
           end
         end
+      end
+
+      def process_account_updated!
+        payment_gateway = Moneytree.PaymentGateway.find(stripe_object.metadata.moneytree_id.to_i)
+        confirm_stripe_account(payment_gateway, stripe_object)
       end
 
       def transaction

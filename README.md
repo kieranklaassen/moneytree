@@ -11,17 +11,17 @@ Moneytree is a rails engine to add multi-PSP payments to your app by extending y
 functionality with almost no work on your end:
 
 - 💵💶💷💴 Multi-currency
-- 🔑 OAuth to link your PSP account
+- 🔑 OAuth and PSP onboarding for your PSP from right inside your app
 - 👩‍💻 PSP account creation, (with commission)
 - ⚙️ Webhooks
 - 💳 ~~PCI compliance with Javascript libraries~~ comming soon
-- 🧲 Platform fees a.k.a. Market Places
+- 🧲 Platform fees
+- 🚀 Market Place transfers for sending one customer charge to multiple accounts.
 
 Currently we support the following PSP's:
 
-- ~~Square~~ comming soon
 - Stripe
-- ~~Braintree~~ comming soon
+- ~~Square~~ comming later
 
 But if you want to add more PSP's, we make it easy to do so. Read our
 [Contributing](https://github.com/kieranklaassen/moneytree#contributing) section to learn more.
@@ -100,6 +100,29 @@ class Merchant < ApplicationRecord
   def moneytree_oauth_callback
     puts "Hurray, I just got associated with a Moneytree gateway!"
   end
+
+  # optional: when using market places onboarding via moneytree.onboarding_new_stripe_path
+  def moneytree_onboarding_data
+    {
+      business_type: 'company',
+      country: 'US',
+      email: 'user@example.com',
+      company: {
+        name: 'User Example LLC',
+        address: {
+          line1: '1 N State St',
+          line2: '',
+          postal_code: '60602',
+          city: 'Chicago',
+          state: 'IL',
+          country: 'US'
+        },
+        phone: '+17735551234',
+        structure: 'multi_member_llc',
+        tax_id: '980000000'
+      }
+    }
+  end
 end
 ```
 
@@ -111,6 +134,43 @@ class Order < ApplicationRecord
   include Moneytree::Order
 end
 ```
+
+### Stripe
+
+Where do I get my credentials from and what do I have to setup on my Stripe account? First, you need to have Stripe Connect enabled.
+
+## Credentials
+
+- Get api_key at https://dashboard.stripe.com/test/apikeys
+- Get client id at: https://dashboard.stripe.com/settings/applications
+
+### Oauth callback (For non-marketplace mode)
+
+If you are tranferring the whole amount of the order to the account, you do not need market place mode and g=can integrate with Oauth. This is called Stripe connect Standard and will allow users to connect or sign up with their own Stripe account.
+
+At https://dashboard.stripe.com/test/settings/applications:
+
+- Enable OAuth for Standard accounts
+- Add URI: `http://localhost:3000/moneytree/oauth/stripe/callback`
+
+### Onboarding in Marketplace Mode (For multi-transfer orders)
+
+In Marketplace mode, Moneytree will onboard merchants on Stripe Express accounts instead of Standard accounts. Your platform will play a more facilitory role in the onboarding process, but Moneytree will take care of the majority of it. This will give you the flexibility to split an order into multiple transfers to different accounts
+
+To onboard a user to have your user navigate to `moneytree.onboarding_new_stripe_path`.
+
+### Webhooks
+
+At https://dashboard.stripe.com/webhooks
+
+In the section titled "Endpoints receiving events from Connect applications", create a webhook to
+`https://www.myawesomeappy.com/moneytree/webhooks/stripe` on your app's domain.
+
+- Add `charge.succeeded`
+- Add `charge.refunded`
+- Add `account.updated` if you are using Moneytree in Marketplace Mode.
+
+Note: The stripe CLI does not allow you to test `account.updated`.
 
 ## Usage
 

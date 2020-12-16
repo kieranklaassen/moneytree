@@ -4,7 +4,7 @@ module Moneytree
   class AccountTest < ActiveSupport::TestCase
     setup do
       @account = Merchant.create name: 'Mr Boomtown'
-      Moneytree::PaymentGateway.create(account: @account, psp: :stripe)
+      @account.create_moneytree_payment_gateway(psp: :stripe)
     end
 
     test 'has one PaymentGateway' do

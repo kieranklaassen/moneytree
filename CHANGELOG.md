@@ -1,5 +1,7 @@
 ## Master
 
+- Add onboarding of Stripe Express accounts using the Stripe Connect API
+
 ## 0.1.11 (2020-12-10)
 
 - Keep track of whether an application fee was charged

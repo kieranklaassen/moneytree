@@ -1,6 +1,8 @@
 module Moneytree
   module Webhooks
     class StripeController < Moneytree::ApplicationController
+      include Moneytree::StripeConfirmable
+
       skip_before_action :verify_authenticity_token
 
       def create
@@ -59,9 +61,7 @@ module Moneytree
 
       def process_account_updated!
         payment_gateway = Moneytree.PaymentGateway.find(stripe_object.metadata.moneytree_id.to_i)
-        if stripe_object.details_submitted && !payment_gateway.onboarding_completed?
-          payment_gateway.update!(onboarding_completed: true)
-        end
+        confirm_stripe_account(payment_gateway, stripe_object)
       end
 
       def transaction

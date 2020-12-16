@@ -14,12 +14,12 @@ module Moneytree
 
       def onboarding_url(moneytree_account, current_host)
         if payment_gateway.psp_credentials&.dig(:account_id)
-          stripe_account = ::Stripe::Account.retrieve(psp_credentials[:account_id])
+          stripe_account = ::Stripe::Account.retrieve(payment_gateway.psp_credentials[:account_id])
         else
           stripe_account = ::Stripe::Account.create({
             type: 'express',
             capabilities: { card_payments: { requested: true }, transfers: { requested: true } },
-            metadata: { payment_gateway_id: payment_gateway.id, account_id: moneytree_account.id }
+            metadata: { payment_gateway_id: payment_gateway.id, account_id: moneytree_account.id, account_type: moneytree_account.class.name }
           }.merge(moneytree_account.moneytree_onboarding_data))
 
           payment_gateway.update! psp_credentials: { account_id: stripe_account.id }

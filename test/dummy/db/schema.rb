@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_09_145605) do
+ActiveRecord::Schema.define(version: 2020_12_16_164908) do
+
+  create_table "merchant_orders", force: :cascade do |t|
+    t.integer "order_id", null: false
+    t.integer "merchant_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["merchant_id"], name: "index_merchant_orders_on_merchant_id"
+    t.index ["order_id"], name: "index_merchant_orders_on_order_id"
+  end
 
   create_table "merchants", force: :cascade do |t|
     t.string "name"
@@ -54,5 +63,7 @@ ActiveRecord::Schema.define(version: 2020_10_09_145605) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "merchant_orders", "merchants"
+  add_foreign_key "merchant_orders", "orders"
   add_foreign_key "moneytree_transactions", "moneytree_transactions", column: "payment_id"
 end

@@ -59,7 +59,8 @@ Moneytree.setup do |config|
   config.current_account = :current_merchant
   config.stripe_credentials = {
     api_key: ENV['STRIPE_API_KEY'],
-    client_id: ENV['STRIPE_CLIENT_ID']
+    client_id: ENV['STRIPE_CLIENT_ID'], # optional, only necessary for onboarding standard accounts in non-marketplace mode
+    public_key: ENV['STRIPE_API_KEY'] # optional, only necessary for marketplace mode
   }
   config.oauth_redirect = '/welcome_back'
   config.refund_application_fee = true # false by default
@@ -90,6 +91,10 @@ class Merchant < ApplicationRecord
 
   def currency_code
     currency.code
+  end
+
+  def name
+    'My awesome business'
   end
 
   def website

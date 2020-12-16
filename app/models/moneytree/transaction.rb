@@ -18,7 +18,8 @@ module Moneytree
 
     delegate :payment_provider, to: :payment_gateway
 
-    after_create_commit :execute_transaction
+    after_create_commit :execute_transaction, if: :payment_gateway
+    after_create_commit :prepare_transaction, if: :marketplace?
 
     def marketplace?
       transfers.any?
@@ -32,7 +33,6 @@ module Moneytree
       if response.success?
         update!(
           status: :completed,
-          psp_error: response.message,
           details: (details || {}).merge(response.body)
         )
       else

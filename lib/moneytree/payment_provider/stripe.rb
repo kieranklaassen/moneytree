@@ -51,7 +51,7 @@ module Moneytree
         PERMISSION.to_s
       end
 
-      def charge(amount, details, metadata:, app_fee_amount: 0, description: "Charge for #{account.name}")
+      def charge(amount, details, metadata:, app_fee_amount: 0, description: "Charge for #{transfers.map(&:account_name).join(', ')}}")
         # `source` is obtained with Stripe.js; see https://stripe.com/docs/payments/accept-a-payment-charges#web-create-token
         response = ::Stripe::Charge.create(
           {

@@ -5,5 +5,11 @@ module Moneytree
     belongs_to :customer_transaction, foreign_key: :transaction_id, class_name: 'Moneytree::Transaction', optional: true
 
     enum status: %i[initialized completed failed]
+
+    serialize :details
+
+    def account_name
+      payment_gateway
+    end
   end
 end

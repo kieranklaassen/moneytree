@@ -6,7 +6,7 @@ module Moneytree
     serialize :psp_credentials
     # encrypts :psp_credentials
     # FIXME: enable https://github.com/ankane/lockbox
-    delegate :oauth_link, :scope_correct?, :charge, :refund, to: :payment_provider
+    delegate :oauth_link, :onboarding_url, :scope_correct?, :charge, :refund, to: :payment_provider
 
     has_many :transactions
 

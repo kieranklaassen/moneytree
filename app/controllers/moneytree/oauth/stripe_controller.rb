@@ -35,10 +35,6 @@ module Moneytree
           }.to_query
         ).to_s
       end
-
-      def current_account
-        send(Moneytree.current_account)
-      end
     end
   end
 end

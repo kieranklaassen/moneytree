@@ -1,7 +1,7 @@
 require 'active_support/concern'
 
 module Moneytree
-  module Order
+  module AccountOrder
     extend ActiveSupport::Concern
 
     included do

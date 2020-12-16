@@ -1,9 +1,16 @@
 module Moneytree
   class Transaction < Moneytree::ApplicationRecord
-    belongs_to :payment_gateway
+    belongs_to :payment_gateway, optional: true
     belongs_to :order, polymorphic: true
 
+    has_many :transfers
+
     validates_presence_of :psp_error, if: :failed?
+    validates_presence_of :payment_gateway, unless: :marketplace?
+    validates_presence_of :transfers, unless: :payment_gateway
+
+    validates_presence_of :app_fee_amount, if: :payment_gateway
+    validates_absence_of :app_fee_amount, if: :marketplace?
 
     enum status: %i[initialized pending completed failed]
 
@@ -12,6 +19,10 @@ module Moneytree
     delegate :payment_provider, to: :payment_gateway
 
     after_create_commit :execute_transaction
+
+    def marketplace?
+      transfers.any?
+    end
 
     def card
       payment_provider.card_for(self)

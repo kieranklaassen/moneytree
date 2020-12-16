@@ -7,6 +7,7 @@
 require 'moneytree/version'
 require 'moneytree/transaction_response'
 require 'moneytree/account'
+require 'moneytree/account_order'
 require 'moneytree/order'
 require 'moneytree/payment_provider/base'
 require 'moneytree/payment_provider/stripe'

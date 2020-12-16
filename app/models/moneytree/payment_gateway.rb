@@ -9,6 +9,7 @@ module Moneytree
     delegate :oauth_link, :onboarding_url, :scope_correct?, :charge, :refund, to: :payment_provider
 
     has_many :transactions
+    has_many :transfers
 
     def oauth_callback(params)
       update! psp_credentials: payment_provider.get_access_token(params), onboarding_completed: true

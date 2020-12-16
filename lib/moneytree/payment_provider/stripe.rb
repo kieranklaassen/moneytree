@@ -65,7 +65,7 @@ module Moneytree
           stripe_account: payment_gateway.psp_credentials[:stripe_user_id]
         )
         # succeeded, pending, or failed
-        TransactionResponse.new(
+        Moneytree::TransactionResponse.new(
           { succeeded: :success, pending: :pending, failed: :failed }[response[:status].to_sym],
           response[:failure_message],
           {
@@ -75,7 +75,7 @@ module Moneytree
           }
         )
       rescue ::Stripe::StripeError => e
-        TransactionResponse.new(:failed, e.message)
+        Moneytree::TransactionResponse.new(:failed, e.message)
       end
 
       def refund(amount, details, metadata:)
@@ -90,17 +90,17 @@ module Moneytree
         )
 
         # succeeded, pending, or failed
-        TransactionResponse.new(
+        Moneytree::TransactionResponse.new(
           { succeeded: :success, pending: :pending, failed: :failed }[response[:status].to_sym],
           response[:failure_message],
           { refund_id: response[:id] }
         )
       rescue ::Stripe::StripeError => e
-        TransactionResponse.new(:failed, e.message)
+        Moneytree::TransactionResponse.new(:failed, e.message)
       end
 
       def card_for(transaction)
-        Card.new(
+        Moneytree::Card.new(
           last4: transaction.details[:card][:last4],
           exp_month: transaction.details[:card][:exp_month],
           exp_year: transaction.details[:card][:exp_year],

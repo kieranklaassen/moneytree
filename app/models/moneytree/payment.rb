@@ -17,10 +17,7 @@ module Moneytree
         metadata: { moneytree_transaction_id: id }
       )
 
-      update!(
-        status: :pending,
-        details: response.body
-      )
+      process_response(response)
     end
 
     def execute_transaction

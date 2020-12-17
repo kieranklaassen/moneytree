@@ -30,13 +30,18 @@ module Moneytree
     end
 
     def process_response(response)
-      if response.success?
+      case response.status
+      when :initialized, :pending
+        update!(
+          status: response.status,
+          details: (details || {}).merge(response.body)
+        )
+      when :success
         update!(
           status: :completed,
           details: (details || {}).merge(response.body)
         )
-      else
-        # FIXME: pending state
+      when :failed
         update!(
           status: :failed,
           psp_error: response.message

@@ -15,30 +15,41 @@ module Moneytree
           }
         )
 
-        transfers.each do |transfer|
-          transfer = ::Stripe::Transfer.create(
-            {
-              amount: transfer.amount,
-              currency: transfer.payment_gateway.account.currency_code,
-              destination: transfer.payment_gateway.psp_credentials['account_id'],
-              source_transaction: payment_intent.id,
-              metadata: { moneytree_transfer_id: transfer.id }
-            }
-          )
-        end
+        # FIXME: Move to charge completed dinges
+        # transfers.each do |transfer|
+        #   ::Stripe::Transfer.create(
+        #     {
+        #       amount: (transfer.amount * 100).to_i,
+        #       currency: transfer.payment_gateway.account.currency_code,
+        #       destination: transfer.payment_gateway.psp_credentials[:account_id],
+        #       source_transaction: payment_intent.id,
+        #       metadata: { moneytree_transfer_id: transfer.id }
+        #     }
+        #   )
+        # end
 
         # succeeded, pending, or failed
         Moneytree::TransactionResponse.new(
-          { succeeded: :success, pending: :pending, failed: :failed }[payment_intent.status.to_sym],
-          payment_intent.failure_message,
-          { payment_intent_id: payment_intent.id }
+          {
+            succeeded: :success,
+            requires_payment_method: :initialized,
+            requires_confirmation: :initialized,
+            requires_action: :pending,
+            processing: :pending,
+            canceled: :failed
+          }[payment_intent.status.to_sym],
+          payment_intent[:failure_message],
+          {
+            payment_intent_id: payment_intent.id,
+            client_secret: payment_intent.client_secret
+          }
         )
       rescue ::Stripe::StripeError => e
         Moneytree::TransactionResponse.new(:failed, e.message)
       end
 
-      def fetch_status(_details)
-        payment_intent = ::Stripe::PaymentIntent.retrieve(details['payment_intend_id'])
+      def fetch_status(details)
+        payment_intent = ::Stripe::PaymentIntent.retrieve(details[:payment_intent_id])
 
         Moneytree::TransactionResponse.new(
           {
@@ -49,7 +60,7 @@ module Moneytree
             processing: :pending,
             canceled: :failed
           }[payment_intent.status.to_sym],
-          payment_intent.failure_message,
+          payment_intent[:failure_message],
           {
             charge_id: payment_intent.id,
             has_application_fee: !app_fee_amount.zero?

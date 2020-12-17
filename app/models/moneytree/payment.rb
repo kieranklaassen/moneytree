@@ -5,7 +5,7 @@ module Moneytree
     validates_absence_of :payment_id
 
     validates_numericality_of :amount, greater_than: 0
-    validates_numericality_of :app_fee_amount, greater_than_or_equal_to: 0
+    validates_numericality_of :app_fee_amount, greater_than_or_equal_to: 0, allow_nil: true
 
     private
 

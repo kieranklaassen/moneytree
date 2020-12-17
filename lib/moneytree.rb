@@ -11,10 +11,11 @@ require 'moneytree/account_order'
 require 'moneytree/order'
 require 'moneytree/payment_provider/base'
 require 'moneytree/payment_provider/stripe'
+require 'moneytree/payment_provider/stripe_marketplace'
 require 'moneytree/engine'
 
 module Moneytree
-  PSPS = %i[stripe].freeze
+  PSPS = %i[stripe stripe_marketplace].freeze
 
   mattr_accessor :enabled_psps
   mattr_accessor :stripe_credentials
@@ -27,8 +28,8 @@ module Moneytree
 
   @@enabled_psps = PSPS
   @@current_account = :current_account
-  @@marketplace_psp = :stripe
-  @@marketplace_psp = :usd
+  @@marketplace_psp = :stripe_marketplace
+  @@marketplace_currency = :usd
   @@oauth_redirect = '/'
   @@refund_application_fee = false
 
@@ -38,7 +39,7 @@ module Moneytree
 
   def self.marketplace_provider
     case @@marketplace_psp
-    when :stripe
+    when :stripe_marketplace
       Moneytree::PaymentProvider::StripeMarketplace.new
     else
       raise "#{@@marketplace_psp} does not support marketplaces"

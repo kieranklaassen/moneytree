@@ -9,7 +9,7 @@ module Moneytree
     serialize :details
 
     def account_name
-      payment_gateway
+      payment_gateway.account.name
     end
   end
 end

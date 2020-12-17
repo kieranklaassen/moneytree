@@ -14,7 +14,7 @@ module Moneytree
       response = Moneytree.marketplace_provider.prepare_payment(
         amount,
         transfers,
-        metadata: metadata.merge(moneytree_transaction_id: id)
+        metadata: { moneytree_transaction_id: id }
       )
 
       update!(
@@ -23,13 +23,13 @@ module Moneytree
       )
     end
 
-    def execute_transaction(metadata: {})
+    def execute_transaction
       process_response(
         payment_gateway.charge(
           amount,
           details,
           app_fee_amount: app_fee_amount,
-          metadata: metadata.merge(moneytree_transaction_id: id)
+          metadata: { moneytree_transaction_id: id }
         )
       )
     end

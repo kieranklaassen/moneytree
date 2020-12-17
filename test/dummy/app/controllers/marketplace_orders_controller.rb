@@ -11,6 +11,9 @@ class MarketplaceOrdersController < ApplicationController
 
   # GET /marketplace_orders/new
   def new
+    payment_gateway = current_merchant.moneytree_payment_gateway
+    redirect_to moneytree.onboarding_stripe_new_path if payment_gateway.blank? || payment_gateway.needs_oauth?
+
     @order = Order.new
   end
 
@@ -26,7 +29,7 @@ class MarketplaceOrdersController < ApplicationController
     )
 
     transfers = @order.merchant_orders.map do |merchant_order|
-      merchant_order.build_moneytree_payout(
+      merchant_order.new_payout(
         payment_gateway: merchant_order.merchant.moneytree_payment_gateway,
         amount: 5.0
       )
@@ -38,7 +41,7 @@ class MarketplaceOrdersController < ApplicationController
     )
 
     if @order.save
-      redirect_to @order, notice: 'Marketplace order was successfully created.'
+      redirect_to edit_marketplace_order_path(@order), notice: 'Marketplace order was successfully created.'
     else
       render :new
     end

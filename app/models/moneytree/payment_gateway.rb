@@ -6,7 +6,7 @@ module Moneytree
     serialize :psp_credentials
     # encrypts :psp_credentials
     # FIXME: enable https://github.com/ankane/lockbox
-    delegate :oauth_link, :onboarding_url, :scope_correct?, :charge, :refund, to: :payment_provider
+    delegate :oauth_link, :scope_correct?, :charge, :refund, to: :payment_provider
 
     has_many :transactions
     has_many :transfers
@@ -14,6 +14,10 @@ module Moneytree
     def oauth_callback(params)
       update! psp_credentials: payment_provider.get_access_token(params), onboarding_completed: true
       account.send(:moneytree_oauth_callback) if account.respond_to?(:moneytree_oauth_callback, true)
+    end
+
+    def onboarding_url(*args)
+      payment_provider.onboarding_url(self, *args)
     end
 
     def psp_connected?
@@ -34,6 +38,8 @@ module Moneytree
         when 'stripe'
           # TODO: see if we only need to pass credentials
           Moneytree::PaymentProvider::Stripe.new(self)
+        when 'stripe_marketplace'
+          Moneytree::PaymentProvider::StripeMarketplace.new
         # when 'square'
         #   Moneytree::PaymentProvider::Square.new(self)
         else

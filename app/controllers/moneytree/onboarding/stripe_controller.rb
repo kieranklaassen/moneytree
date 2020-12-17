@@ -6,7 +6,7 @@ module Moneytree
       def new
         payment_gateway = Moneytree::PaymentGateway.find_or_create_by!(
           id: session[:payment_gateway_id],
-          psp: 'stripe',
+          psp: 'stripe_marketplace',
           marketplace_capable: true
         )
 

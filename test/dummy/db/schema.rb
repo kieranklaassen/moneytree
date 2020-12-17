@@ -41,12 +41,12 @@ ActiveRecord::Schema.define(version: 2020_12_16_164908) do
 
   create_table "moneytree_transactions", force: :cascade do |t|
     t.decimal "amount", default: "0.0", null: false
-    t.decimal "app_fee_amount", default: "0.0", null: false
+    t.decimal "app_fee_amount"
     t.integer "status", default: 0, null: false
     t.string "type", default: "Moneytree::Payment", null: false
     t.string "order_type", null: false
     t.integer "order_id", null: false
-    t.integer "payment_gateway_id", null: false
+    t.integer "payment_gateway_id"
     t.integer "payment_id"
     t.text "psp_error"
     t.text "details"

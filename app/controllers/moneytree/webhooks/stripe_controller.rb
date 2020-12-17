@@ -23,10 +23,16 @@ module Moneytree
       private
 
       def webhook_params
-        @webhook_params ||=
-          ::Stripe::Event.construct_from(
-            JSON.parse(request.body.read, symbolize_names: true)
-          )
+        payload = request.body.read
+        sig_header = request.env['HTTP_STRIPE_SIGNATURE']
+
+        @webhook_params ||= ::Stripe::Webhook.construct_event(
+          request.body.read,
+          request.env['HTTP_STRIPE_SIGNATURE'],
+          Moneytree.stripe_credentials[:webhook_secret]
+        )
+      rescue JSON::ParserError, Stripe::SignatureVerificationError
+        raise ActionDispatch::Http::Parameters::ParseError # Will return status 400
       end
 
       def process_charge!

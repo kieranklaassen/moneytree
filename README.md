@@ -168,14 +168,19 @@ To onboard a user to have your user navigate to `moneytree.onboarding_new_stripe
 
 At https://dashboard.stripe.com/webhooks
 
-In the section titled "Endpoints receiving events from Connect applications", create a webhook to
+In the section titled "Endpoints receiving events from your account", create a webhook to `https://www.myawesomeappy.com/moneytree/webhooks/stripe` on your app's domain, adding the following events:
+
+- `charge.succeeded`
+- `charge.refunded`
+
+Find the webhook secret, and save it in your credentials file at the stripe credentials, as `account_webhook_secret`
+
+When using Moneytree in marketplace mode, there is another webhook you need to create. In the section titled "Endpoints receiving events from Connect applications", create a webhook to
 `https://www.myawesomeappy.com/moneytree/webhooks/stripe` on your app's domain.
 
-- Add `charge.succeeded`
-- Add `charge.refunded`
 - Add `account.updated` if you are using Moneytree in Marketplace Mode.
 
-Note: The stripe CLI does not allow you to test `account.updated`.
+Find the webhook secret, and save it in your credentials file at the stripe credentials, as `connect_webhook_secret`
 
 ## Usage
 

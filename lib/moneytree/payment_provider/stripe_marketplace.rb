@@ -93,6 +93,10 @@ module Moneytree
         stripe_account_link.url
       end
 
+      def retrieve_account(id)
+        ::Stripe::Account.retrieve(id)
+      end
+
       def scope; end
     end
   end

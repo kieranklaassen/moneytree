@@ -6,7 +6,7 @@ module Moneytree
       def new
         payment_gateway = Moneytree::PaymentGateway.find_or_create_by!(
           id: session[:payment_gateway_id],
-          psp: 'stripe',
+          psp: 'stripe_marketplace',
           marketplace_capable: true
         )
 
@@ -17,7 +17,7 @@ module Moneytree
 
       def complete
         payment_gateway = Moneytree::PaymentGateway.find(session[:payment_gateway_id])
-        stripe_account = ::Stripe::Account.retrieve(payment_gateway[:psp_credentials][:account_id])
+        stripe_account = payment_gateway.payment_provider.retrieve_account(payment_gateway[:psp_credentials][:account_id])
 
         confirm_stripe_account(payment_gateway, stripe_account)
 

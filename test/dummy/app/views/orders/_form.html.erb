@@ -18,13 +18,15 @@
     <%= form.submit %>
   </div>
 <% end %>
+
+
 <script type="text/javascript">
   var stripe = Stripe('<%= Merchant.last.moneytree_payment_gateway.psp_credentials[:stripe_publishable_key] %>');
   var elements = stripe.elements();
   var card = elements.create('card');
-  
+
   card.mount('#card-element');
-  
+
   // Handle real-time validation errors from the card Element.
   card.on('change', function(event) {
   var displayError = document.getElementById('card-errors');
@@ -34,12 +36,12 @@
     displayError.textContent = '';
   }
   });
-  
+
   // Handle form submission.
   var form = document.getElementById('payment-form');
   form.addEventListener('submit', function(event) {
   event.preventDefault();
-  
+
   stripe.createToken(card).then(function(result) {
     if (result.error) {
       // Inform the user if there was an error.
@@ -51,7 +53,7 @@
     }
   });
   });
-  
+
   // Submit the form with the token ID.
   function stripeTokenHandler(token) {
     // Insert the token ID into the form so it gets submitted to the server
@@ -61,7 +63,7 @@
     hiddenInput.setAttribute('name', 'card_token');
     hiddenInput.setAttribute('value', token.id);
     form.appendChild(hiddenInput);
-  
+
     // Submit the form
     form.submit();
   }

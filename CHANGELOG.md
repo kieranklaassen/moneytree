@@ -1,6 +1,7 @@
 ## Master
 
 - Add onboarding of Stripe Express accounts using the Stripe Connect API
+- NOTE: Migrations have changed. Make sure to reflect this in your app. See the test/dummy/db/schema.rb for details
 
 ## 0.1.11 (2020-12-10)
 

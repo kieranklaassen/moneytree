@@ -5,19 +5,44 @@ module Moneytree
     validates_absence_of :payment_id
 
     validates_numericality_of :amount, greater_than: 0
-    validates_numericality_of :app_fee_amount, greater_than_or_equal_to: 0
+    validates_numericality_of :app_fee_amount, greater_than_or_equal_to: 0, allow_nil: true
+
+    # TODO: Make state machine logic
+    after_save :execute_payouts, if: -> { saved_change_to_status? && completed? }
 
     private
 
-    def execute_transaction(metadata: {})
+    # TODO: Expose description to user
+    def prepare_transaction
+      response = Moneytree.marketplace_provider.prepare_payment(
+        amount,
+        transfers,
+        metadata: { moneytree_transaction_id: id }
+      )
+
+      process_response(response)
+    end
+
+    def execute_transaction
       process_response(
         payment_gateway.charge(
           amount,
           details,
           app_fee_amount: app_fee_amount,
-          metadata: metadata.merge(moneytree_transaction_id: id)
+          metadata: { moneytree_transaction_id: id }
         )
       )
+    end
+
+    def execute_payouts
+      transfers.initialized.each(&:execute!)
+    end
+
+    def fetch_status!
+      raise Moneytree::Error, 'Cannot fetch status on direct transaction' unless marketplace?
+      return if completed? || failed?
+
+      Moneytree.marketplace_provider.fetch_status(details)
     end
   end
 end

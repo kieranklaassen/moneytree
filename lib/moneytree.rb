@@ -40,7 +40,7 @@ module Moneytree
   def self.marketplace_provider
     case @@marketplace_psp
     when :stripe_marketplace
-      Moneytree::PaymentProvider::StripeMarketplace.new
+      Moneytree::PaymentProvider::StripeMarketplace
     else
       raise "#{@@marketplace_psp} does not support marketplaces"
     end

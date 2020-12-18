@@ -39,7 +39,7 @@ module Moneytree
           # TODO: see if we only need to pass credentials
           Moneytree::PaymentProvider::Stripe.new(self)
         when 'stripe_marketplace'
-          Moneytree::PaymentProvider::StripeMarketplace.new
+          Moneytree::PaymentProvider::StripeMarketplace.new(self)
         # when 'square'
         #   Moneytree::PaymentProvider::Square.new(self)
         else

@@ -3,7 +3,10 @@ module Moneytree
     extend ActiveSupport::Concern
 
     def confirm_stripe_account(payment_gateway, stripe_account)
-      payment_gateway.update!(onboarding_completed: stripe_account.details_submitted)
+      payment_gateway.update!(
+        onboarding_completed: stripe_account.details_submitted,
+        psp_credentials: psp_credentials.merge({ stripe_account: stripe_account })
+      )
 
       # Attach this payment gateway to this account
       stripe_account

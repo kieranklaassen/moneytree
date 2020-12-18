@@ -7,20 +7,21 @@
 
 🔥 A powerful, simple, and extendable payment engine for rails, centered around transactional payments. 💵 🌴
 
-Moneytree is a rails engine to add multi-PSP payments to your app by extending your own models. It brings the following
+Moneytree is a rails engine to add multi-PSP, multi-merchant payments to your app by extending your own models. It brings the following
 functionality with almost no work on your end:
 
 - 💵💶💷💴 Multi-currency
 - 🔑 OAuth and PSP onboarding for your PSP from right inside your app
 - 👩‍💻 PSP account creation, (with commission)
 - ⚙️ Webhooks
-- 💳 ~~PCI compliance with Javascript libraries~~ comming soon
+- 💳 ~~Javascript libraries~~ comming soon
 - 🧲 Platform fees
 - 🚀 Market Place transfers for sending one customer charge to multiple accounts.
 
 Currently we support the following PSP's:
 
-- Stripe
+- Stripe Connect Standard (Stripe with connected accounts)
+- Stripe Connect Express (Stripe Marketplace) with multi transfers
 - ~~Square~~ comming later
 
 But if you want to add more PSP's, we make it easy to do so. Read our

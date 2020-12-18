@@ -29,6 +29,7 @@ module Moneytree
       payment_provider.card_for(self)
     end
 
+    # @param [PspResponse] response
     def process_response(response)
       case response.status
       when :initialized, :pending

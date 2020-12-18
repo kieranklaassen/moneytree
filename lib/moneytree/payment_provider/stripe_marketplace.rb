@@ -51,7 +51,7 @@ module Moneytree
       def fetch_status(details)
         payment_intent = ::Stripe::PaymentIntent.retrieve(details[:payment_intent_id])
 
-        Moneytree::TransactionResponse.new(
+        Moneytree::PspResponse.new(
           {
             succeeded: :success,
             requires_payment_method: :initialized,

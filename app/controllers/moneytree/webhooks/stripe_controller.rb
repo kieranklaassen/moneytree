@@ -38,7 +38,7 @@ module Moneytree
         return if transaction.completed?
 
         transaction.process_response(
-          Moneytree::TransactionResponse.new(:success, '', { charge_id: stripe_object.id })
+          Moneytree::PspResponse.new(:success, '', { charge_id: stripe_object.id })
         )
 
         if Moneytree.order_status_trigger_method
@@ -56,7 +56,7 @@ module Moneytree
           next if refund.completed?
 
           refund.process_response(
-            Moneytree::TransactionResponse.new(:success, '')
+            Moneytree::PspResponse.new(:success, '')
           )
           if Moneytree.order_status_trigger_method
             transaction.order.send(Moneytree.order_status_trigger_method, transaction)

@@ -1,5 +1,5 @@
 module Moneytree
-  class TransactionResponse
+  class PspResponse
     attr_reader :message, :status, :body
 
     def initialize(status, message, body = {})

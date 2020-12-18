@@ -22,23 +22,21 @@ class MarketplaceOrdersController < ApplicationController
 
   # POST /marketplace_orders
   def create
-    @order = Order.new(
-      merchant_orders: [
-        MerchantOrder.new(merchant: current_merchant)
-      ]
+    @order = Order.create!
+
+    merchant_order = @order.merchant_orders.create!(merchant: current_merchant)
+
+    transaction = @order.new_payment(
+      amount: 10.0
     )
 
     transfers = @order.merchant_orders.map do |merchant_order|
-      merchant_order.new_payout(
+      transaction.transfers << merchant_order.new_payout(
         payment_gateway: merchant_order.merchant.moneytree_payment_gateway,
-        amount: 5.0
+        amount: 5.0,
+        customer_transaction: transaction
       )
     end
-
-    transaction = @order.new_payment(
-      amount: 10.0,
-      transfers: transfers
-    )
 
     if @order.save
       redirect_to edit_marketplace_order_path(@order), notice: 'Marketplace order was successfully created.'

@@ -24,7 +24,7 @@ module Moneytree
           status: :failed,
           psp_error: response.message
         )
+      end
     end
   end
 end
-

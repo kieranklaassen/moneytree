@@ -99,14 +99,9 @@ module Moneytree
           metadata: metadata
         )
 
-          Moneytree::PspResponse.new(
-            :success,
-            '',
-            { transfer_id: response.id }
-          )
-        rescue ::Stripe::StripeError => e
-          Moneytree::PspResponse.new(:failed, e.message)
-        end
+        Moneytree::PspResponse.new(:success, '', { transfer_id: response.id })
+      rescue ::Stripe::StripeError => e
+        Moneytree::PspResponse.new(:failed, e.message)
       end
 
       def scope; end

@@ -65,6 +65,8 @@ module Moneytree
       end
 
       def process_account_updated!
+        return if stripe_object.metadata[:payment_gateway_id].blank?
+
         payment_gateway = Moneytree::PaymentGateway.find(stripe_object.metadata[:payment_gateway_id].to_i)
         confirm_stripe_account(payment_gateway, stripe_object)
       end

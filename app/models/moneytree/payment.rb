@@ -1,6 +1,5 @@
 module Moneytree
   class Payment < Moneytree::Transaction
-    has_many :payouts
     has_many :refunds, class_name: 'Moneytree::Refund'
 
     validates_absence_of :payment_id
@@ -9,7 +8,7 @@ module Moneytree
     validates_numericality_of :app_fee_amount, greater_than_or_equal_to: 0, allow_nil: true
 
     # TODO: Make state machine logic
-    after_save :execute_transfers, if: -> { saved_change_to_status? && completed? }
+    after_save :execute_payouts, if: -> { saved_change_to_status? && completed? }
 
     private
 
@@ -36,7 +35,7 @@ module Moneytree
     end
 
     def execute_payouts
-      payouts.initialized.each(&:execute!)
+      transfers.initialized.each(&:execute!)
     end
 
     def fetch_status!

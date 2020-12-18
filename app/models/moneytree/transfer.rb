@@ -11,5 +11,20 @@ module Moneytree
     def account_name
       payment_gateway.account.name
     end
+
+    # @param [PspResponse] response
+    def process_response(response)
+      if response.success?
+        update!(
+          status: :completed,
+          details: (details || {}).merge(response.body)
+        )
+      else
+        update!(
+          status: :failed,
+          psp_error: response.message
+        )
+    end
   end
 end
+

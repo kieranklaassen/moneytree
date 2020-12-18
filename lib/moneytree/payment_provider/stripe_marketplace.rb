@@ -68,7 +68,7 @@ module Moneytree
           stripe_account = ::Stripe::Account.create({
             type: 'express',
             capabilities: { card_payments: { requested: true }, transfers: { requested: true } },
-            metadata: { payment_gateway_id: payment_gateway.id, account_id: moneytree_account.id, account_type: moneytree_account.class.name }
+            metadata: { moneytree_payment_gateway_id: payment_gateway.id, account_id: moneytree_account.id, account_type: moneytree_account.class.name }
           }.merge(moneytree_account.moneytree_onboarding_data))
 
           payment_gateway.update! psp_credentials: { account_id: stripe_account.id }
@@ -88,6 +88,25 @@ module Moneytree
 
       def retrieve_account(id)
         ::Stripe::Account.retrieve(id)
+      end
+
+      def payout(payment_details, amount, metadata: {})
+        respone = ::Stripe::Transfer.create(
+          amount: (amount * 100).to_i,
+          currency: payment_gateway.account.currency_code,
+          destination: payment_gateway.psp_credentials[:account_id],
+          source_transaction: payment_details['charge_id'],
+          metadata: metadata
+        )
+
+          Moneytree::PspResponse.new(
+            :success,
+            '',
+            { transfer_id: response.id }
+          )
+        rescue ::Stripe::StripeError => e
+          Moneytree::PspResponse.new(:failed, e.message)
+        end
       end
 
       def scope; end

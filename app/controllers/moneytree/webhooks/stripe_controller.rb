@@ -23,13 +23,12 @@ module Moneytree
       private
 
       def webhook_params
-        payload = request.body.read
         sig_header = request.env['HTTP_STRIPE_SIGNATURE']
 
         @webhook_params ||= ::Stripe::Webhook.construct_event(
-          request.body.read,
+          payload,
           request.env['HTTP_STRIPE_SIGNATURE'],
-          Moneytree.stripe_credentials[:webhook_secret]
+          webhook_secret
         )
       rescue JSON::ParserError, Stripe::SignatureVerificationError
         raise ActionDispatch::Http::Parameters::ParseError # Will return status 400
@@ -66,7 +65,7 @@ module Moneytree
       end
 
       def process_account_updated!
-        payment_gateway = Moneytree.PaymentGateway.find(stripe_object.metadata.moneytree_id.to_i)
+        payment_gateway = Moneytree::PaymentGateway.find(stripe_object.metadata[:payment_gateway_id].to_i)
         confirm_stripe_account(payment_gateway, stripe_object)
       end
 
@@ -76,6 +75,19 @@ module Moneytree
 
       def stripe_object
         @stripe_object ||= webhook_params.data.object
+      end
+
+      def payload
+        @payload ||= request.body.read
+      end
+
+      def webhook_secret
+        case JSON.parse(payload)['type']
+        when 'charge.succeeded', 'charge.refunded'
+          Moneytree.stripe_credentials[:account_webhook_secret]
+        when 'account.updated'
+          Moneytree.stripe_credentials[:connect_webhook_secret]
+        end
       end
     end
   end

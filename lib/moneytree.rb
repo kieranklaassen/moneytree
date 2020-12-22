@@ -19,7 +19,7 @@ module Moneytree
 
   mattr_accessor :enabled_psps
   mattr_accessor :stripe_credentials
-  mattr_accessor :current_account
+  mattr_accessor :current_account_accessor
   mattr_accessor :marketplace_psp
   mattr_accessor :marketplace_currency
   mattr_accessor :oauth_redirect
@@ -27,7 +27,7 @@ module Moneytree
   mattr_accessor :order_status_trigger_method
 
   @@enabled_psps = PSPS
-  @@current_account = :current_account
+  @@current_account_accessor = :current_account_accessor
   @@marketplace_psp = :stripe_marketplace
   @@marketplace_currency = :usd
   @@oauth_redirect = '/'

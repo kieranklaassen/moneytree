@@ -12,7 +12,7 @@ module Moneytree
 
         session[:payment_gateway_id] = payment_gateway.id
 
-        redirect_to payment_gateway.onboarding_url(current_account, request.base_url)
+        redirect_to payment_gateway.onboarding_url(__current_account, request.base_url)
       end
 
       def complete

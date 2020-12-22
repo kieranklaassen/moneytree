@@ -1,7 +1,15 @@
 ## Master
 
 - Add onboarding of Stripe Express accounts using the Stripe Connect API
-- NOTE: Migrations have changed. Make sure to reflect this in your app. See the test/dummy/db/schema.rb for details
+- NOTE: Migrations have changed. Make sure to reflect this in your app. If you're upgrading at this point, create a migration with the following statements:
+
+```ruby
+    add_column :moneytree_payment_gateways, :onboarding_completed, :boolean, null: false, default: false
+    add_column :moneytree_payment_gateways, :marketplace_capable, :boolean, null: false, default: false
+    change_column_null :moneytree_transactions, :app_fee_amount, true
+    change_column_default :moneytree_transactions, :app_fee_amount, from: 0.0, to: nil
+    change_column_null :moneytree_transactions, :payment_gateway_id, true
+```
 
 ## 0.1.11 (2020-12-10)
 

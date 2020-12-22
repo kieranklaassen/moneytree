@@ -57,7 +57,7 @@ Do you need to make some changes to how Moneytree is used? You can create an ini
 
 ```ruby
 Moneytree.setup do |config|
-  config.current_account = :current_merchant
+  config.current_account_accessor = :current_merchant
   config.stripe_credentials = {
     api_key: ENV['STRIPE_API_KEY'],
     client_id: ENV['STRIPE_CLIENT_ID'], # optional, only necessary for onboarding standard accounts in non-marketplace mode

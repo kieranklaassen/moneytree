@@ -7,8 +7,17 @@ module Moneytree
     validates_numericality_of :amount, greater_than: 0
     validates_numericality_of :app_fee_amount, greater_than_or_equal_to: 0, allow_nil: true
 
+    before_destroy :cancel_payment
+
     # TODO: Make state machine logic
     after_save :execute_payouts, if: -> { saved_change_to_status? && completed? }
+
+    def fetch_status!
+      raise Moneytree::Error, 'Cannot fetch status on direct transaction' unless marketplace?
+      return if completed? || failed?
+
+      Moneytree.marketplace_provider.fetch_status(details)
+    end
 
     private
 
@@ -21,6 +30,14 @@ module Moneytree
       )
 
       process_response(response)
+    end
+
+    def cancel_payment
+      throw :abort unless initialized?
+      throw :abort if refunds.any?
+
+      transfers.destroy_all!
+      MoneyTree.marketplace_provider.cancel_payment(details)
     end
 
     def execute_transaction
@@ -36,13 +53,6 @@ module Moneytree
 
     def execute_payouts
       transfers.initialized.each(&:execute!)
-    end
-
-    def fetch_status!
-      raise Moneytree::Error, 'Cannot fetch status on direct transaction' unless marketplace?
-      return if completed? || failed?
-
-      Moneytree.marketplace_provider.fetch_status(details)
     end
   end
 end

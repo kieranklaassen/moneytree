@@ -33,32 +33,36 @@ module Moneytree
         rescue ::Stripe::StripeError => e
           Moneytree::PspResponse.new(:failed, e.message)
         end
+
+        def cancel_payment(details)
+          ::Stripe::PaymentIntent.retrieve(details[:payment_intent_id]).cancel
+        end
+
+        def fetch_status(details)
+          payment_intent = ::Stripe::PaymentIntent.retrieve(details[:payment_intent_id])
+
+          Moneytree::PspResponse.new(
+            {
+              succeeded: :success,
+              requires_payment_method: :initialized,
+              requires_confirmation: :initialized,
+              requires_action: :pending,
+              processing: :pending,
+              canceled: :failed
+            }[payment_intent.status.to_sym],
+            payment_intent[:failure_message],
+            {
+              charge_id: payment_intent.id,
+              has_application_fee: !app_fee_amount.zero?
+            }
+          )
+        end
       end
 
       def initialize(_payment_gateway)
         ::Stripe.api_key = Moneytree.stripe_credentials[:api_key]
 
         super
-      end
-
-      def fetch_status(details)
-        payment_intent = ::Stripe::PaymentIntent.retrieve(details[:payment_intent_id])
-
-        Moneytree::PspResponse.new(
-          {
-            succeeded: :success,
-            requires_payment_method: :initialized,
-            requires_confirmation: :initialized,
-            requires_action: :pending,
-            processing: :pending,
-            canceled: :failed
-          }[payment_intent.status.to_sym],
-          payment_intent[:failure_message],
-          {
-            charge_id: payment_intent.id,
-            has_application_fee: !app_fee_amount.zero?
-          }
-        )
       end
 
       def onboarding_url(payment_gateway, moneytree_account, current_host)

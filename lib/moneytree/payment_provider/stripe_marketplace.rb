@@ -53,7 +53,7 @@ module Moneytree
             payment_intent[:failure_message],
             {
               charge_id: payment_intent.id,
-              has_application_fee: !app_fee_amount.zero?
+              has_application_fee: !!app_fee_amount&.nonzero?
             }
           )
         end

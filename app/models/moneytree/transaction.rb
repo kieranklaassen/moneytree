@@ -58,7 +58,7 @@ module Moneytree
       end
 
       if Moneytree.order_status_trigger_method && saved_change_to_status?
-        transaction.order.send(Moneytree.order_status_trigger_method, transaction)
+        order.send(Moneytree.order_status_trigger_method, transaction)
       end
     end
   end

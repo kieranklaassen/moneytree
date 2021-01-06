@@ -38,7 +38,7 @@ module Moneytree
           ::Stripe::PaymentIntent.retrieve(details[:payment_intent_id]).cancel
         end
 
-        def fetch_status(details)
+        def fetch_status(details, app_fee_amount)
           payment_intent = ::Stripe::PaymentIntent.retrieve(details[:payment_intent_id])
 
           Moneytree::PspResponse.new(

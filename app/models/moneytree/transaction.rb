@@ -21,6 +21,14 @@ module Moneytree
     after_create_commit :execute_transaction, if: :payment_gateway
     after_create_commit :prepare_transaction, if: :marketplace?
 
+    def payment?
+      is_a? Moneytree::Payment
+    end
+
+    def refund?
+      is_a? Moneytree::Refund
+    end
+
     def marketplace?
       transfers.any?
     end
@@ -47,6 +55,10 @@ module Moneytree
           status: :failed,
           psp_error: response.message
         )
+      end
+
+      if Moneytree.order_status_trigger_method && saved_change_to_status?
+        transaction.order.send(Moneytree.order_status_trigger_method, transaction)
       end
     end
   end

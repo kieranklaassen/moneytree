@@ -16,7 +16,7 @@ module Moneytree
       raise Moneytree::Error, 'Cannot fetch status on direct transaction' unless marketplace?
       return if completed? || failed?
 
-      Moneytree.marketplace_provider.fetch_status(details)
+      process_response Moneytree.marketplace_provider.fetch_status(details)
     end
 
     private

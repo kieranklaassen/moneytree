@@ -36,7 +36,7 @@ module Moneytree
       throw :abort unless initialized?
       throw :abort if refunds.any?
 
-      transfers.destroy_all!
+      transfers.each(&:destroy!)
       MoneyTree.marketplace_provider.cancel_payment(details)
     end
 

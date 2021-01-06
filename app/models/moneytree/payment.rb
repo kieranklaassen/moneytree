@@ -37,7 +37,7 @@ module Moneytree
       throw :abort if refunds.any?
 
       transfers.each(&:destroy!)
-      MoneyTree.marketplace_provider.cancel_payment(details)
+      Moneytree.marketplace_provider.cancel_payment(details)
     end
 
     def execute_transaction

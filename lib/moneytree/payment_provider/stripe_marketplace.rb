@@ -40,7 +40,6 @@ module Moneytree
 
         def fetch_status(details, app_fee_amount)
           payment_intent = ::Stripe::PaymentIntent.retrieve(details[:payment_intent_id])
-
           Moneytree::PspResponse.new(
             {
               succeeded: :success,
@@ -52,7 +51,7 @@ module Moneytree
             }[payment_intent.status.to_sym],
             payment_intent[:failure_message],
             {
-              charge_id: payment_intent.id,
+              charge_id: payment_intent.charges.detect { |c| c.status == 'succeeded' }.id,
               has_application_fee: !!app_fee_amount&.nonzero?
             }
           )
@@ -99,7 +98,7 @@ module Moneytree
           amount: (amount * 100).to_i,
           currency: payment_gateway.account.currency_code,
           destination: payment_gateway.psp_credentials[:account_id],
-          source_transaction: payment_details['charge_id'],
+          source_transaction: payment_details[:charge_id],
           metadata: metadata
         )
 
@@ -109,7 +108,11 @@ module Moneytree
       end
 
       def reverse_payout(payout_details, amount, metadata: {})
-        response = ::Stripe::Transfer.create_reversal(payout_details[:transfer_id], (amount * 100).to_i, metadata)
+        response = ::Stripe::Transfer.create_reversal(payout_details[:transfer_id], {
+          amount: (amount * 100).to_i,
+          metadata: metadata
+        })
+
         Moneytree::PspResponse.new(:success, '', { transfer_id: response.id })
       rescue ::Stripe::StripeError => e
         Moneytree::PspResponse.new(:failed, e.message)

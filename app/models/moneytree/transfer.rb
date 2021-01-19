@@ -8,6 +8,9 @@ module Moneytree
 
     serialize :details
 
+    scope :payout, -> { where(type: 'Moneytree::Payout') }
+    scope :reverse_payout, -> { where(type: 'Moneytree::ReversePayout') }
+
     def account_name
       payment_gateway.account.name
     end

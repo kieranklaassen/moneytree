@@ -95,7 +95,7 @@ module Moneytree
       end
 
       def payout(payment_details, amount, metadata: {})
-        respone = ::Stripe::Transfer.create(
+        response = ::Stripe::Transfer.create(
           amount: (amount * 100).to_i,
           currency: payment_gateway.account.currency_code,
           destination: payment_gateway.psp_credentials[:account_id],
@@ -103,6 +103,13 @@ module Moneytree
           metadata: metadata
         )
 
+        Moneytree::PspResponse.new(:success, '', { transfer_id: response.id })
+      rescue ::Stripe::StripeError => e
+        Moneytree::PspResponse.new(:failed, e.message)
+      end
+
+      def reverse_payout(payout_details, amount, metadata: {})
+        response = ::Stripe::Transfer.create_reversal(payout_details[:transfer_id], (amount * 100).to_i, metadata)
         Moneytree::PspResponse.new(:success, '', { transfer_id: response.id })
       rescue ::Stripe::StripeError => e
         Moneytree::PspResponse.new(:failed, e.message)

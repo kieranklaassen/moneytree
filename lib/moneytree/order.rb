@@ -5,7 +5,6 @@ module Moneytree
     extend ActiveSupport::Concern
 
     included do
-      has_many :merchant_orders
       has_many :moneytree_transactions, class_name: 'Moneytree::Transaction', foreign_key: 'order_id', inverse_of: :order, as: :order
     end
 

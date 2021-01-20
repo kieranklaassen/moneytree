@@ -1,6 +1,8 @@
 module Moneytree
   module Oauth
     class StripeController < Moneytree::ApplicationController
+      before_action :authenticate
+
       def new
         redirect_to stripe_oauth_url
       end

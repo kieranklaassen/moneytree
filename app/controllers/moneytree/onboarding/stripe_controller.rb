@@ -1,6 +1,8 @@
 module Moneytree
   module Onboarding
     class StripeController < Moneytree::ApplicationController
+      before_action :authenticate
+
       include Moneytree::StripeConfirmable
 
       def new

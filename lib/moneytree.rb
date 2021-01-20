@@ -25,6 +25,7 @@ module Moneytree
   mattr_accessor :oauth_redirect
   mattr_accessor :refund_application_fee
   mattr_accessor :order_status_trigger_method
+  mattr_accessor :authenticate
 
   @@enabled_psps = PSPS
   @@current_account_accessor = :current_account_accessor

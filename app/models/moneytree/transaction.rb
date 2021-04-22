@@ -19,7 +19,6 @@ module Moneytree
     delegate :payment_provider, to: :payment_gateway
 
     after_create_commit :execute_transaction, if: :payment_gateway
-    after_create_commit :prepare_transaction, if: :marketplace?
 
     scope :payment, -> { where(type: "Moneytree::Payment") }
     scope :refund, -> { where(type: "Moneytree::Refund") }

@@ -12,6 +12,8 @@ module Moneytree
     # TODO: Make state machine logic
     after_save :execute_payouts, if: -> { saved_change_to_status? && completed? }
 
+    after_create_commit :prepare_payment, if: :marketplace?
+
     def fetch_status!
       raise Moneytree::Error, "Cannot fetch status on direct transaction" unless marketplace?
       return if completed? || failed?
@@ -22,11 +24,11 @@ module Moneytree
     private
 
     # TODO: Expose description to user
-    def prepare_transaction
+    def prepare_payment
       response = Moneytree.marketplace_provider.prepare_payment(
         amount,
         transfers,
-        metadata: {moneytree_transaction_id: id}
+        id
       )
 
       process_response(response)

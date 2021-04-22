@@ -2,17 +2,21 @@ module Moneytree
   module PaymentProvider
     class StripeMarketplace < Base
       class << self
-        def prepare_payment(amount, transfers, metadata: {}, description: "Charge for #{transfers.map(&:account_name).join(", ")}")
+        def prepare_payment(amount, transfers, transaction_id, metadata: {}, description: "Charge for #{transfers.map(&:account_name).join(", ")}")
           ::Stripe.api_key = Moneytree.stripe_credentials[:api_key]
 
-          payment_intent = ::Stripe::PaymentIntent.create(
-            {
-              amount: (amount * 100).to_i,
-              currency: Moneytree.marketplace_currency,
-              payment_method_types: ["card"],
-              metadata: metadata
-            }
-          )
+          payment_intent_data = {
+            amount: (amount * 100).to_i,
+            currency: Moneytree.marketplace_currency,
+            payment_method_types: ["card"],
+            metadata: metadata.merge({moneytree_transaction_id: transaction_id})
+          }
+
+          if transfers.select { |t| t.is_a? Payout }.sum(&:amount) > amount
+            payment_intent_data[:transfer_group] = "MTREE_#{transaction_id}"
+          end
+
+          payment_intent = ::Stripe::PaymentIntent.create(payment_intent_data)
 
           # succeeded, pending, or failed
           Moneytree::PspResponse.new(
@@ -27,8 +31,9 @@ module Moneytree
             payment_intent[:failure_message],
             {
               payment_intent_id: payment_intent.id,
-              client_secret: payment_intent.client_secret
-            }
+              client_secret: payment_intent.client_secret,
+              transfer_group: payment_intent_data[:transfer_group]
+            }.compact
           )
         rescue ::Stripe::StripeError => e
           Moneytree::PspResponse.new(:failed, e.message)
@@ -94,13 +99,20 @@ module Moneytree
       end
 
       def payout(payment_details, amount, metadata: {})
-        response = ::Stripe::Transfer.create(
+        transfer_args = {
           amount: (amount * 100).to_i,
           currency: payment_gateway.account.currency_code,
           destination: payment_gateway.psp_credentials[:account_id],
-          source_transaction: payment_details[:charge_id],
           metadata: metadata
-        )
+        }
+
+        if payment_details[:transfer_group]
+          transfer_args[:transfer_group] = payment_details[:transfer_group]
+        else
+          transfer_args[:source_transaction] = payment_details[:charge_id]
+        end
+
+        response = ::Stripe::Transfer.create(**transfer_args)
 
         Moneytree::PspResponse.new(:success, "", {transfer_id: response.id})
       rescue ::Stripe::StripeError => e

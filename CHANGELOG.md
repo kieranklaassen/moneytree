@@ -1,6 +1,7 @@
 ## Master
 
 - Add authentication settings
+- Add Stripe Marketplace PSP that allows multi-merchant transactions and smart transfers
 - Add onboarding of Stripe Express accounts using the Stripe Connect API
 - NOTE: Migrations have changed. Make sure to reflect this in your app. If you're upgrading at this point, create a migration with the following statements:
 

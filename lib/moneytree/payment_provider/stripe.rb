@@ -5,8 +5,8 @@ module Moneytree
       PERMISSION = :read_write
 
       def initialize(payment_gateway)
-        raise Error, 'Please set your Stripe credentials' if credentitals.nil?
-        raise Error, 'Please include the stripe gem to your Gemfile' unless Object.const_defined?('::Stripe')
+        raise Error, "Please set your Stripe credentials" if credentitals.nil?
+        raise Error, "Please include the stripe gem to your Gemfile" unless Object.const_defined?("::Stripe")
 
         ::Stripe.api_key = credentitals[:api_key]
         super
@@ -16,7 +16,7 @@ module Moneytree
         # FIXME: add error handling
         ::Stripe::OAuth.token(
           {
-            grant_type: 'authorization_code',
+            grant_type: "authorization_code",
             code: params[:code]
           }
         ).to_hash
@@ -26,7 +26,7 @@ module Moneytree
         PERMISSION.to_s
       end
 
-      def charge(amount, details, metadata:, app_fee_amount: 0, description: "Charge for #{transfers.map(&:account_name).join(', ')}}")
+      def charge(amount, details, metadata:, app_fee_amount: 0, description: "Charge for #{transfers.map(&:account_name).join(", ")}}")
         # `source` is obtained with Stripe.js; see https://stripe.com/docs/payments/accept-a-payment-charges#web-create-token
         response = ::Stripe::Charge.create(
           {
@@ -41,7 +41,7 @@ module Moneytree
         )
         # succeeded, pending, or failed
         Moneytree::PspResponse.new(
-          { succeeded: :success, pending: :pending, failed: :failed }[response[:status].to_sym],
+          {succeeded: :success, pending: :pending, failed: :failed}[response[:status].to_sym],
           response[:failure_message],
           {
             charge_id: response[:id],
@@ -66,9 +66,9 @@ module Moneytree
 
         # succeeded, pending, or failed
         Moneytree::PspResponse.new(
-          { succeeded: :success, pending: :pending, failed: :failed }[response[:status].to_sym],
+          {succeeded: :success, pending: :pending, failed: :failed}[response[:status].to_sym],
           response[:failure_message],
-          { refund_id: response[:id] }
+          {refund_id: response[:id]}
         )
       rescue ::Stripe::StripeError => e
         Moneytree::PspResponse.new(:failed, e.message)

@@ -8,7 +8,7 @@ module Moneytree
 
     def execute!
       process_response(
-        payment_gateway.reverse_payout(payout.details, -amount, metadata: { moneytree_transfer_id: id })
+        payment_gateway.reverse_payout(payout.details, -amount, metadata: {moneytree_transfer_id: id})
       )
     end
 

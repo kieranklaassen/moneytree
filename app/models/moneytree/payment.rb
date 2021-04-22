@@ -1,6 +1,6 @@
 module Moneytree
   class Payment < Moneytree::Transaction
-    has_many :refunds, class_name: 'Moneytree::Refund'
+    has_many :refunds, class_name: "Moneytree::Refund"
 
     validates_absence_of :payment_id
 
@@ -13,7 +13,7 @@ module Moneytree
     after_save :execute_payouts, if: -> { saved_change_to_status? && completed? }
 
     def fetch_status!
-      raise Moneytree::Error, 'Cannot fetch status on direct transaction' unless marketplace?
+      raise Moneytree::Error, "Cannot fetch status on direct transaction" unless marketplace?
       return if completed? || failed?
 
       process_response Moneytree.marketplace_provider.fetch_status(details, app_fee_amount)
@@ -26,7 +26,7 @@ module Moneytree
       response = Moneytree.marketplace_provider.prepare_payment(
         amount,
         transfers,
-        metadata: { moneytree_transaction_id: id }
+        metadata: {moneytree_transaction_id: id}
       )
 
       process_response(response)
@@ -46,7 +46,7 @@ module Moneytree
           amount,
           details,
           app_fee_amount: app_fee_amount,
-          metadata: { moneytree_transaction_id: id }
+          metadata: {moneytree_transaction_id: id}
         )
       )
     end

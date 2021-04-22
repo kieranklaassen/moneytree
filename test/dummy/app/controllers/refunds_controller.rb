@@ -5,7 +5,7 @@ class RefundsController < ApplicationController
     @refund = Moneytree::Refund.new(refund_params)
 
     if @refund.save
-      redirect_to @refund.order, notice: 'Refund was successfully created.'
+      redirect_to @refund.order, notice: "Refund was successfully created."
     else
       redirect_to @refund.order, notice: @refund.errors.full_messages
     end

@@ -9,9 +9,9 @@ module Moneytree
 
       def callback
         # TODO: Remove this module prefix once we figure out how to properly autoload this.
-        payment_gateway = __current_account.create_moneytree_payment_gateway(psp: 'stripe')
+        payment_gateway = __current_account.create_moneytree_payment_gateway(psp: "stripe")
         payment_gateway.oauth_callback(payment_gateway_params)
-        redirect_to Moneytree.oauth_redirect, notice: 'Connected to Stripe'
+        redirect_to Moneytree.oauth_redirect, notice: "Connected to Stripe"
       end
 
       private
@@ -24,8 +24,8 @@ module Moneytree
         # https://stripe.com/docs/connect/oauth-reference
         # https://stripe.com/docs/connect/oauth-reference#get-authorize
         URI::HTTPS.build(
-          host: 'connect.stripe.com',
-          path: '/oauth/authorize',
+          host: "connect.stripe.com",
+          path: "/oauth/authorize",
           query: {
             response_type: :code,
             client_id: Moneytree.stripe_credentials[:client_id],

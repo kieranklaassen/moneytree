@@ -7,7 +7,8 @@ class OrdersController < ApplicationController
   end
 
   # GET /orders/1
-  def show; end
+  def show
+  end
 
   # GET /orders/new
   def new
@@ -18,7 +19,8 @@ class OrdersController < ApplicationController
   end
 
   # GET /orders/1/edit
-  def edit; end
+  def edit
+  end
 
   # POST /orders
   def create
@@ -27,12 +29,12 @@ class OrdersController < ApplicationController
     transaction = @order.new_payment(
       payment_gateway: current_merchant.moneytree_payment_gateway,
       amount: 10.0,
-      details: { card_token: params[:card_token] },
+      details: {card_token: params[:card_token]},
       app_fee_amount: 1.0
     )
 
     if @order.save
-      redirect_to @order, notice: 'Order was successfully created.'
+      redirect_to @order, notice: "Order was successfully created."
     else
       render :new
     end
@@ -41,7 +43,7 @@ class OrdersController < ApplicationController
   # PATCH/PUT /orders/1
   def update
     if @order.update(order_params)
-      redirect_to @order, notice: 'Order was successfully updated.'
+      redirect_to @order, notice: "Order was successfully updated."
     else
       render :edit
     end
@@ -50,7 +52,7 @@ class OrdersController < ApplicationController
   # DELETE /orders/1
   def destroy
     @order.destroy
-    redirect_to orders_url, notice: 'Order was successfully destroyed.'
+    redirect_to orders_url, notice: "Order was successfully destroyed."
   end
 
   private

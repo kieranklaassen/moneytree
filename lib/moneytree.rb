@@ -4,15 +4,15 @@
 
 # modules
 # FIXME: autoload instead? https :/ / github.com / excid3 / noticed / blob / master / lib / noticed.rb
-require 'moneytree/version'
-require 'moneytree/transaction_response'
-require 'moneytree/account'
-require 'moneytree/account_order'
-require 'moneytree/order'
-require 'moneytree/payment_provider/base'
-require 'moneytree/payment_provider/stripe'
-require 'moneytree/payment_provider/stripe_marketplace'
-require 'moneytree/engine'
+require "moneytree/version"
+require "moneytree/transaction_response"
+require "moneytree/account"
+require "moneytree/account_order"
+require "moneytree/order"
+require "moneytree/payment_provider/base"
+require "moneytree/payment_provider/stripe"
+require "moneytree/payment_provider/stripe_marketplace"
+require "moneytree/engine"
 
 module Moneytree
   PSPS = %i[stripe stripe_marketplace].freeze
@@ -31,7 +31,7 @@ module Moneytree
   @@current_account_accessor = :current_account_accessor
   @@marketplace_psp = :stripe_marketplace
   @@marketplace_currency = :usd
-  @@oauth_redirect = '/'
+  @@oauth_redirect = "/"
   @@refund_application_fee = false
 
   def self.setup

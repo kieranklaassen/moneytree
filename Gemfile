@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 # Declare your gem's dependencies in moneytree.gemspec.
@@ -22,10 +22,10 @@ gem "rubocop", "~> 0.89.1"
 # gem "combustion", "~> 1.3"
 # gem "sqlite3", "~> 1.4"
 # gem 'guard-rspec', require: false
-gem 'square.rb', '~> 6.3'
+gem "square.rb", "~> 6.3"
 gem "pry", "~> 0.13.1"
-gem 'guard'
-gem 'guard-minitest'
+gem "guard"
+gem "guard-minitest"
 gem "annotate", "~> 3.1"
 
 gem "stripe", "~> 5.25"

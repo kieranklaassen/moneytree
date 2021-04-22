@@ -11,7 +11,7 @@ module Moneytree
     def authenticate
       return if Moneytree.authenticate.nil?
 
-      raise ActionController::RoutingError, 'Authentication failed' unless Moneytree.authenticate.call(request)
+      raise ActionController::RoutingError, "Authentication failed" unless Moneytree.authenticate.call(request)
     end
   end
 end

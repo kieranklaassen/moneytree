@@ -11,7 +11,7 @@ module Moneytree
 
       def callback
         __current_account.oauth_callback(params)
-        render text: 'Boom'
+        render text: "Boom"
       end
     end
   end

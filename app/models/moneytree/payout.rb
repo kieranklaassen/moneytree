@@ -6,7 +6,7 @@ module Moneytree
 
     def execute!
       process_response(
-        payment_gateway.payout(customer_transaction.details, amount, metadata: { moneytree_transfer_id: id })
+        payment_gateway.payout(customer_transaction.details, amount, metadata: {moneytree_transfer_id: id})
       )
     end
   end

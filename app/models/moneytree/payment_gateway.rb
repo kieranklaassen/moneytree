@@ -35,15 +35,15 @@ module Moneytree
     def payment_provider
       @payment_provider ||=
         case psp
-        when 'stripe'
+        when "stripe"
           # TODO: see if we only need to pass credentials
           Moneytree::PaymentProvider::Stripe.new(self)
-        when 'stripe_marketplace'
+        when "stripe_marketplace"
           Moneytree::PaymentProvider::StripeMarketplace.new(self)
         # when 'square'
         #   Moneytree::PaymentProvider::Square.new(self)
         else
-          raise 'BOOM'
+          raise "BOOM"
         end
     end
   end

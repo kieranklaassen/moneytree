@@ -7,11 +7,11 @@ module Moneytree
 
       def create
         case webhook_params.type
-        when 'charge.succeeded'
+        when "charge.succeeded"
           process_charge!
-        when 'charge.refunded'
+        when "charge.refunded"
           process_refund!
-        when 'account.updated'
+        when "account.updated"
           process_account_updated!
         else
           puts "Unhandled event type: #{webhook_params.type}"
@@ -23,11 +23,11 @@ module Moneytree
       private
 
       def webhook_params
-        sig_header = request.env['HTTP_STRIPE_SIGNATURE']
+        sig_header = request.env["HTTP_STRIPE_SIGNATURE"]
 
         @webhook_params ||= ::Stripe::Webhook.construct_event(
           payload,
-          request.env['HTTP_STRIPE_SIGNATURE'],
+          request.env["HTTP_STRIPE_SIGNATURE"],
           webhook_secret
         )
       rescue JSON::ParserError, Stripe::SignatureVerificationError
@@ -38,7 +38,7 @@ module Moneytree
         return if transaction.completed?
 
         transaction.process_response(
-          Moneytree::PspResponse.new(:success, '', { charge_id: stripe_object.id })
+          Moneytree::PspResponse.new(:success, "", {charge_id: stripe_object.id})
         )
       end
 
@@ -52,7 +52,7 @@ module Moneytree
           next if refund.completed?
 
           refund.process_response(
-            Moneytree::PspResponse.new(:success, '')
+            Moneytree::PspResponse.new(:success, "")
           )
         end
       end
@@ -77,10 +77,10 @@ module Moneytree
       end
 
       def webhook_secret
-        case JSON.parse(payload)['type']
-        when 'charge.succeeded', 'charge.refunded'
+        case JSON.parse(payload)["type"]
+        when "charge.succeeded", "charge.refunded"
           Moneytree.stripe_credentials[:account_webhook_secret]
-        when 'account.updated'
+        when "account.updated"
           Moneytree.stripe_credentials[:connect_webhook_secret]
         end
       end

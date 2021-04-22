@@ -7,7 +7,8 @@ class MarketplaceOrdersController < ApplicationController
   end
 
   # GET /marketplace_orders/1
-  def show; end
+  def show
+  end
 
   # GET /marketplace_orders/new
   def new
@@ -18,7 +19,8 @@ class MarketplaceOrdersController < ApplicationController
   end
 
   # GET /marketplace_orders/1/edit
-  def edit; end
+  def edit
+  end
 
   # POST /marketplace_orders
   def create
@@ -30,16 +32,16 @@ class MarketplaceOrdersController < ApplicationController
       amount: 10.0
     )
 
-    transfers = @order.merchant_orders.map do |merchant_order|
+    transfers = @order.merchant_orders.map { |merchant_order|
       transaction.transfers << merchant_order.new_payout(
         payment_gateway: merchant_order.merchant.moneytree_payment_gateway,
         amount: 5.0,
         customer_transaction: transaction
       )
-    end
+    }
 
     if @order.save
-      redirect_to edit_marketplace_order_path(@order), notice: 'Marketplace order was successfully created.'
+      redirect_to edit_marketplace_order_path(@order), notice: "Marketplace order was successfully created."
     else
       render :new
     end
@@ -48,7 +50,7 @@ class MarketplaceOrdersController < ApplicationController
   # PATCH/PUT /marketplace_orders/1
   def update
     if @order.update(order_params)
-      redirect_to @order, notice: 'Marketplace order was successfully updated.'
+      redirect_to @order, notice: "Marketplace order was successfully updated."
     else
       render :edit
     end
@@ -57,7 +59,7 @@ class MarketplaceOrdersController < ApplicationController
   # DELETE /marketplace_orders/1
   def destroy
     @order.destroy
-    redirect_to marketplace_orders_url, notice: 'Marketplace order was successfully destroyed.'
+    redirect_to marketplace_orders_url, notice: "Marketplace order was successfully destroyed."
   end
 
   private

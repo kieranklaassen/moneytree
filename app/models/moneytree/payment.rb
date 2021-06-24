@@ -28,7 +28,8 @@ module Moneytree
       response = Moneytree.marketplace_provider.prepare_payment(
         amount,
         transfers,
-        id
+        id,
+        details: details
       )
 
       process_response(response)

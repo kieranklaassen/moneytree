@@ -2,15 +2,21 @@ module Moneytree
   module PaymentProvider
     class StripeMarketplace < Base
       class << self
-        def prepare_payment(amount, transfers, transaction_id, metadata: {}, description: "Charge for #{transfers.map(&:account_name).join(", ")}")
+        def prepare_payment(amount, transfers, transaction_id, details: {}, metadata: {}, description: "Charge for #{transfers.map(&:account_name).join(", ")}")
           ::Stripe.api_key = Moneytree.stripe_credentials[:api_key]
 
           payment_intent_data = {
             amount: (amount * 100).to_i,
             currency: Moneytree.marketplace_currency,
-            payment_method_types: ["card"],
             metadata: metadata.merge({moneytree_transaction_id: transaction_id})
           }
+
+          if details&.dig(:payment_method_id)
+            payment_intent_data[:customer] = details[:customer_id]
+            payment_intent_data[:payment_method] = details[:payment_method_id]
+            payment_intent_data[:confirm] = true
+            payment_intent_data[:confirmation_method] = 'manual'
+          end
 
           if transfers.select { |t| t.is_a? Payout }.sum(&:amount) > amount
             payment_intent_data[:transfer_group] = "MTREE_#{transaction_id}"
